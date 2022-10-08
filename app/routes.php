@@ -21,5 +21,8 @@ return function (App $app) {
     $app->group('/api', function (Group $group) {
         $group->get('/test', \App\Application\API\TestDataAction::class);
         $group->get('/testerror', \App\Application\API\TestErrorAction::class);
+        $group->get('/testprotected', \App\Application\API\TestProtectedAction::class);
+        $group->get('/login', \App\Application\API\LoginAction::class);
+        $group->get('/logout', \App\Application\API\LogoutAction::class);
     });
 };

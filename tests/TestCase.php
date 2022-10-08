@@ -73,3 +73,10 @@ class TestCase extends PHPUnit_TestCase
         return new SlimRequest($method, $uri, $h, $cookies, $serverParams, $stream);
     }
 }
+
+/*
+ * tests do not have $_SESSION and the session middleware breaks. start a session.
+ */
+if (!session_id()) {
+    session_start();
+}

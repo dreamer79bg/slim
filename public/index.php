@@ -17,4 +17,14 @@ $twig = Twig::create(__DIR__.'/../src/Views', ['cache' => __DIR__.'/../twigcache
 // Add Twig-View Middleware
 $app->add(TwigMiddleware::create($app, $twig));
 
+
+//create session
+$app->add(
+  new \Slim\Middleware\Session([
+    'name' => 'slimblog_session',
+    'autorefresh' => true,
+    'lifetime' => '1 hour',
+  ])
+);
+
 $app->run();

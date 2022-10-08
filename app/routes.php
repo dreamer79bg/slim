@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Application\Actions\HelloWorldAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -16,6 +15,7 @@ return function (App $app) {
         return $response;
     });
 
-    $app->get('/hellotest', HelloWorldAction::class);
+    $app->get('/hellotest', \App\Application\Actions\HelloWorldAction::class);
+    $app->get('/twigtest', \App\Application\Actions\TwigTestAction::class);
     
 };

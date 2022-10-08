@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
+use Slim\Views\Twig;
 
 abstract class Action
 {
@@ -34,7 +35,7 @@ abstract class Action
         $this->args = $args;
 
         try {
-            return $this->action($request,$response);
+            return $this->action();
         } catch (DomainRecordNotFoundException $e) {
             throw new HttpNotFoundException($this->request, $e->getMessage());
         }
@@ -44,7 +45,7 @@ abstract class Action
      * @throws DomainRecordNotFoundException
      * @throws HttpBadRequestException
      */
-    abstract protected function action(Request $request, Response $response): Response;
+    abstract protected function action(): Response;
 
     /**
      * @return array|object
@@ -85,5 +86,14 @@ abstract class Action
         return $this->response
                     ->withHeader('Content-Type', 'application/json')
                     ->withStatus($payload->getStatusCode());
+    }
+    
+    /*
+     * Return a twig view
+     */    
+    protected function view(string $tplName, array $data=[]) {
+        $view = Twig::fromRequest($this->request);
+        $view->render($this->response, $tplName, $data);
+        return $this->response;
     }
 }

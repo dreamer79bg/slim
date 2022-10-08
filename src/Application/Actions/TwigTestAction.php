@@ -8,14 +8,13 @@ use App\Application\Actions\Action;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class HelloWorldAction extends Action
+class TwigTestAction extends Action
 {
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $this->response->getBody()->write('Hello world!');
-        return $this->response;
+         return $this->view('hello.html');
     }
 }

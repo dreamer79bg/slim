@@ -4,7 +4,8 @@
         "slim/slim": "4.*",
         "phpunit/phpunit": "^9.5.25",
         "jangregor/phpstan-prophecy": "^1.0.0",
-        "phpspec/prophecy-phpunit": "^2.0"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "slim/twig-view": "^3.3"
     },
     "autoload": {
         "psr-4": {

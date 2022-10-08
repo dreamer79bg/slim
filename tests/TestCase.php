@@ -14,6 +14,8 @@ use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request as SlimRequest;
 use Slim\Psr7\Uri;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
 
 class TestCase extends PHPUnit_TestCase
 {
@@ -34,6 +36,13 @@ class TestCase extends PHPUnit_TestCase
         //override the production route for testing
         $app->setBasePath('');
 
+        // Create Twig
+        $twig = Twig::create(__DIR__.'/../src/Views', ['cache' => __DIR__.'/../twigcache']);
+
+        // Add Twig-View Middleware
+        $app->add(TwigMiddleware::create($app, $twig));
+
+        
         return $app;
     }
 

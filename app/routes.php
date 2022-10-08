@@ -18,4 +18,6 @@ return function (App $app) {
     $app->get('/hellotest', \App\Application\Actions\HelloWorldAction::class);
     $app->get('/twigtest', \App\Application\Actions\TwigTestAction::class);
     
+    $app->get('/api/test', \App\Application\API\TestDataAction::class);
+    $app->get('/api/testerror', \App\Application\API\TestErrorAction::class);
 };

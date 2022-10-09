@@ -17,6 +17,8 @@ return function (App $app) {
 
     $app->get('/hellotest', \App\Application\Actions\TestActions\HelloWorldAction::class);
     $app->get('/twigtest', \App\Application\Actions\TestActions\TwigTestAction::class);
+
+    $app->get('/', \App\Application\Actions\Index\IndexAction::class);
     
     $app->group('/api', function (Group $group) {
         $group->get('/test', \App\Application\API\TestActions\TestDataAction::class);

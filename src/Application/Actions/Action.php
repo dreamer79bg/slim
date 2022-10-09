@@ -88,12 +88,10 @@ abstract class Action
                     ->withStatus($payload->getStatusCode());
     }
     
-    /*
-     * Return a twig view
-     */    
-    protected function view(string $tplName, array $data=[]) {
+    protected function view(string $tplName, array $data=[], int $statusCode=200): Response {
         $view = Twig::fromRequest($this->request);
         $view->render($this->response, $tplName, $data);
-        return $this->response;
+        
+        return $this->response->withStatus($statusCode);
     }
 }

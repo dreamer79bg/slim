@@ -9,7 +9,7 @@ use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
     $app->setBasePath('/slim');
-
+    
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
@@ -26,5 +26,12 @@ return function (App $app) {
         $group->get('/testprotected', \App\Application\API\TestActions\TestProtectedAction::class);
         $group->get('/login', \App\Application\API\Security\LoginAction::class);
         $group->get('/logout', \App\Application\API\Security\LogoutAction::class);
+    });
+    
+    $app->group('/admin', function (Group $group) {
+        $group->get('/', \App\Application\Actions\Admin\IndexAction::class);
+        $group->get('', \App\Application\Actions\Admin\IndexAction::class);
+        $group->post('', \App\Application\Actions\Admin\IndexAction::class);
+        $group->post('/', \App\Application\Actions\Admin\IndexAction::class);
     });
 };

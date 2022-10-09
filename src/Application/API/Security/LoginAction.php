@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\API;
+namespace App\Application\API\Security;
 
 use App\Application\API\Action;
 use App\Application\API\ActionError;

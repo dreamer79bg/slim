@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Application\API;
+namespace Tests\Application\API\TestActions;
 
 use Tests\TestCase;
 

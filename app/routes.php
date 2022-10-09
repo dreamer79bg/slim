@@ -15,14 +15,14 @@ return function (App $app) {
         return $response;
     });
 
-    $app->get('/hellotest', \App\Application\Actions\HelloWorldAction::class);
-    $app->get('/twigtest', \App\Application\Actions\TwigTestAction::class);
+    $app->get('/hellotest', \App\Application\Actions\TestActions\HelloWorldAction::class);
+    $app->get('/twigtest', \App\Application\Actions\TestActions\TwigTestAction::class);
     
     $app->group('/api', function (Group $group) {
-        $group->get('/test', \App\Application\API\TestDataAction::class);
-        $group->get('/testerror', \App\Application\API\TestErrorAction::class);
-        $group->get('/testprotected', \App\Application\API\TestProtectedAction::class);
-        $group->get('/login', \App\Application\API\LoginAction::class);
-        $group->get('/logout', \App\Application\API\LogoutAction::class);
+        $group->get('/test', \App\Application\API\TestActions\TestDataAction::class);
+        $group->get('/testerror', \App\Application\API\TestActions\TestErrorAction::class);
+        $group->get('/testprotected', \App\Application\API\TestActions\TestProtectedAction::class);
+        $group->get('/login', \App\Application\API\Security\LoginAction::class);
+        $group->get('/logout', \App\Application\API\Security\LogoutAction::class);
     });
 };

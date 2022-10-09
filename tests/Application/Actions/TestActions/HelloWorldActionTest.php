@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Application\API;
+namespace Tests\Application\Actions\TestActions;
 
 use Tests\TestCase;
 
-class TestErrorTest extends TestCase
+class HelloWorldActionTest extends TestCase
 {
     public function testAction()
     {
@@ -15,7 +15,7 @@ class TestErrorTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
       
-        $request = $this->createRequest('GET', '/api/testerror');
+        $request = $this->createRequest('GET', '/hellotest');
         
         try {
             $response = $app->handle($request);
@@ -25,10 +25,6 @@ class TestErrorTest extends TestCase
         }
         $payload = (string) $response->getBody();
         
-        $data= json_decode($payload,true);
-        $this->assertArrayHasKey('error', $data);
-        $this->assertArrayNotHasKey('data', $data);
-        $this->assertArrayHasKey('statusCode', $data);
-        $this->assertEquals(404,$data['statusCode']);
+        $this->assertEquals('Hello world!', $payload);
     }
 }

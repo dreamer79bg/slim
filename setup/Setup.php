@@ -56,7 +56,7 @@ class Setup {
         reset($migrations);
         foreach ($migrations as $migFile) {
             $migText= file_get_contents($migrationsPath.'/'.$migFile)."\n\n";
-            $arrMig= explode(';',$migText);
+            $arrMig= explode("\n--!ENDQUERY--",$migText);
             reset($arrMig);
             foreach ($arrMig as $sql) {
                 $sql= trim($sql);

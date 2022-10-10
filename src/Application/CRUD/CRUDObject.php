@@ -14,11 +14,12 @@ abstract class CRUDObject {
     protected $_DELETEDFIELDNAME = 'deleted';
 
     /**
-     * name=>array(
+     * field name=>array(
      * 'attribute'=>
      * ,'type'=> bool, string, datetime, int, float for mysql function calls such as now() - @now() etc.
      * ,'isPrimary'=>bool/int
      * ,'canNotChange'=>bool/int
+     * ,'setterPreprocessor'=>string a method to be called to preprocess the value on set
      * ) for table fields
      * 
      * @var array
@@ -36,16 +37,20 @@ abstract class CRUDObject {
     );
 
     /**
-     * array of validator method names - fieldname=>validator method / fieldname=>array(validator method)
+     * array of validator method names - attribute name=>validator method / attribute name=>array(validator method)
      * @var array
      */
     protected array $_validators = array(
     );
+    
     protected Database $_database;
     protected array $_data = array();
     protected array $_tableKeyAttribute = array(); //attributeName,fieldName,type
     protected array $_attributeTypes = array();
     protected array $_readOnlyAttributes = array();
+    protected array $_setterPreprocessors= array();
+    protected array $_attributeToField=array();
+        
 
     public function __construct($databaseKey = null) {
         $this->_database = new Database();
@@ -57,8 +62,14 @@ abstract class CRUDObject {
             }
 
             $this->_attributeTypes[$attributeData['attribute']] = $attributeData['type'];
+            $this->_attributeToField[$attributeData['attribute']] = $fieldName;
+            
             if (!empty($attributeData['canNotChange'])) {
                 $this->_readOnlyAttributes[$attributeData['attribute']] = 1;
+            }
+            
+            if (!empty($attributeData['setterPreprocessor'])) {
+                $this->_setterPreprocessors[$attributeData['attribute']] = $attributeData['setterPreprocessor'];
             }
         }
 
@@ -238,24 +249,24 @@ abstract class CRUDObject {
         try {
             reset($this->_dataFields);
             foreach ($this->_dataFields as $fieldName => $attributeData) {
-                if (empty($attributeData['canNotChange']) || empty($id)) {
+                if (empty($attributeData['canNotChange']) || empty($id)||!empty($attributeData['isPrimary'])) {
                     if (empty($attributeData['isPrimary'])) {
                         $field=$this->_database->escapeFieldName($fieldName);
-                        $sqlFields[] = $this->_database->escapeFieldName($fieldName);
+                        $sqlFields[] = $field;
                         $val = $this->getEscapedAttributeValue($attributeData['attribute']);
                         $sqlData[] = $val;
-                        $updateData[] = $field.'='.$val;
+                        $updateData[] = $field.'=values('.$field.')';
                     } else {
                         //primary key is considered to not allow null
                         if (!is_object($this->_data[$attributeData['attribute']]) && $this->_data[$attributeData['attribute']] !== null) {
                             $field=$this->_database->escapeFieldName($fieldName);
-                            $sqlFields[] = $this->_database->escapeFieldName($fieldName);
+                            $sqlFields[] = $field;
                             $val = $this->getEscapedAttributeValue($attributeData['attribute']);
                             $sqlData[] = $val;
-                            $updateData[] = $field.'='.$val;
+                            $updateData[] = $field.'=values('.$field.')';
                         }
                     }
-                }
+                } 
             }
 
             $sql = sprintf('insert into %1$s (%2$s) values (%3$s) on duplicate key update %4$s'
@@ -374,8 +385,15 @@ abstract class CRUDObject {
         if (isset($this->_readOnlyAttributes[$name]) && !empty($this->getTableKeyValue()) || $this->_tableKeyAttribute[0] == $name) {
             throw new \Exception('Can not change read only attributes (' . $name . ')');
         }
+        
+        if (isset($this->_setterPreprocessors[$name])) {
+            $value=$this->{$this->_setterPreprocessors[$name]}($value);
+        }
 
         $this->_data[$name] = $value;
     }
 
+    protected function notEmptyValidator($value): bool {
+        return !empty($value);
+    }
 }

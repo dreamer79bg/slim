@@ -27,6 +27,9 @@
         "post-install-cmd": [
             "App\\Setup\\Setup::doSetup",
             "phpunit"
+        ],
+        "setup": [
+            "App\\Setup\\Setup::doSetup"
         ]
     }
 }

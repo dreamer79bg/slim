@@ -90,6 +90,10 @@ abstract class Action
     
     protected function view(string $tplName, array $data=[], int $statusCode=200): Response {
         $view = Twig::fromRequest($this->request);
+        
+        global $app;
+        $data= array('baseAppPath'=>$app->getBasePath())+$data;
+        
         $view->render($this->response, $tplName, $data);
         
         return $this->response->withStatus($statusCode);

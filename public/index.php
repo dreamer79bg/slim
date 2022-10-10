@@ -5,6 +5,8 @@ use Slim\Views\TwigMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+global $app;
+
 $app = AppFactory::create();
 
 $routes= require __DIR__ . '/../app/routes.php';

@@ -27,6 +27,8 @@ class TestCase extends PHPUnit_TestCase
      */
     protected function getAppInstance(): App
     {
+        global $app;
+        
         $app = AppFactory::create();
         
         $routes= require __DIR__ . '/../app/routes.php';

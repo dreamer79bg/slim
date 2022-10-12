@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use SlimSession\Helper as SessionHelper;
+use App\Application\DataServices\UserDataService;
 
 abstract class ProtectedAction extends Action {
 
@@ -23,10 +24,20 @@ abstract class ProtectedAction extends Action {
 
         $parsedBody = $request->getParsedBody();
 
-        if ($request->getMethod() == 'POST') {
+         if ($request->getMethod() == 'POST') {
             if (!empty($parsedBody['doLogin']) && $parsedBody['doLogin'] == 'login') {
-                $session->clear(); //clear all old session info
-                $session->set('userId', 1);
+                $session->clear();
+
+                if (isset($parsedBody['username']) && isset($parsedBody['password'])) {
+                    $userService = new UserDataService();
+                    
+                    if (($id = $userService->getLoginId($parsedBody['username'], $parsedBody['password']))>0) {
+                        $user = $userService->getById($id);
+                        $session->set('userId', $id);
+                        $session->set('userName', $user->userName);
+                        $session->set('fullName', $user->fullName);
+                    }
+                }
             }
         }
 

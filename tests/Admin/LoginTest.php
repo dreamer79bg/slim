@@ -22,7 +22,7 @@ class LoginTest extends TestCase
         $this->assertEquals(403, $status);
         
         //simulate post of login page and check if admin index(status 200) is returned
-        $request = $this->createRequest('POST', '/admin')->withParsedBody(array('doLogin'=>'login'));
+        $request = $this->createRequest('POST', '/admin')->withParsedBody(array('doLogin'=>'login','username'=>'super','password'=>'12345678'));
         $response = $app->handle($request);
         $status = $response->getStatusCode();
         $this->assertEquals(200, $status);
@@ -32,5 +32,12 @@ class LoginTest extends TestCase
         $response = $app->handle($request);
         $status = $response->getStatusCode();
         $this->assertEquals(403, $status);
+        
+        //simulate post of login page and check if admin index(status 200) is returned
+        $request = $this->createRequest('POST', '/admin')->withParsedBody(array('doLogin'=>'login','username'=>'super','password'=>'a1234568'));
+        $response = $app->handle($request);
+        $status = $response->getStatusCode();
+        $this->assertEquals(403, $status);
+        
     }
 }

@@ -8,6 +8,9 @@ use Tests\TestCase;
 
 class TestDataTest extends TestCase
 {
+     /**
+     * @covers App\Application\API\TestActions\TestDataAction
+     */
     public function testAction()
     {
         $app = $this->getAppInstance();

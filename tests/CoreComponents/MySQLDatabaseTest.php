@@ -10,6 +10,9 @@ use Exception;
 
 class MySQLDatabaseTest extends TestCase
 {
+    /**
+     * @covers App\CoreComponents\MySQLDatabase
+     */
     public function testAction()
     {
         $ok= true;

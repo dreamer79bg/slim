@@ -23,16 +23,16 @@ class CreateAction extends ProtectedAction
         $payload = (string)$this->request->getBody();
         if ($payload != '') {
             $reqData = json_decode($payload,true);
-
             if (is_array($reqData)) {
                 try {
                     $userService = new UserDataService();
-                    $userService->createUser($reqData);
+                    $id= $userService->createUser($reqData);
+                    $user= $userService->getById($id);
                 } catch (Exception $e) {
                     return $this->respondWithError(new ActionError(ActionError::BAD_REQUEST), 400);
                 }
                 
-                return $this->respondWithData(array('status'=>'ok'), 200);
+                return $this->respondWithData(array('status'=>'ok','id'=>$user->id), 200);
             }
         }
         

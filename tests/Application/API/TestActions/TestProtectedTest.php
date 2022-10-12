@@ -96,6 +96,11 @@ class TestProtectedTest extends TestCase {
         $this->assertEquals(403, $response->getStatusCode());
     }
 
+    /**
+     * @covers App\Application\API\TestActions\TestProtectedAction
+     * @covers App\Application\API\Security\LoginAction
+     * @covers App\Application\API\Security\LogoutAction
+     */
     public function testAction() {
 
 

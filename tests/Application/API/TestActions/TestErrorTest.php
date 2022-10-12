@@ -8,6 +8,9 @@ use Tests\TestCase;
 
 class TestErrorTest extends TestCase
 {
+    /**
+     * @covers App\Application\API\TestActions\TestErrorAction
+     */
     public function testAction()
     {
         $app = $this->getAppInstance();

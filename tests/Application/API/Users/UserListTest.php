@@ -8,6 +8,11 @@ use Tests\Application\API\TestCase;
 
 class UserListTest extends TestCase
 {
+    /**
+     * @covers App\Application\API\Users\ListAction
+     * @covers App\Application\API\Security\LoginAction
+     * @covers App\Application\API\Security\LogoutAction
+     */
     public function testAction()
     {
         $this->doLogin();

@@ -100,8 +100,19 @@ class UserDataService {
                 $this->userObject->password= $data['password'];
             }
             $this->userObject->save(); //if there is a problem with data exception will be thrown
+            
+            return $this->userObject->getId();
         } else {
             throw new Exception('Can not create a user with a given id.');
         }
+    }
+    
+    /**
+     * Deletes a user. Throws an exception if id not found/already deleted
+     * @param type $id
+     */
+    public function deleteUser($id) {
+        $this->userObject->read($id);
+        $this->userObject->delete();
     }
 }

@@ -9,6 +9,9 @@ use App\CoreComponents\MySQLDatabase;
 
 class MySQLQueryTest extends TestCase
 {
+    /**
+     * @covers App\CoreComponents\MySQLDatabaseQuery
+     */
     public function testAction()
     {
         $database= new MySQLDatabase();

@@ -9,6 +9,9 @@ use Tests\TestCase as MainTestCase;
 
 class TestCase extends MainTestCase {
 
+    /**
+     * @covers App\Application\API\Security\LoginAction
+     */
     protected function doLogin() {
         $app= $this->getAppInstance();
         
@@ -32,6 +35,9 @@ class TestCase extends MainTestCase {
         }
     }
 
+    /**
+     * @covers App\Application\API\Security\LogoutAction
+     */
     protected function doLogout() {
         $app= $this->getAppInstance();
         

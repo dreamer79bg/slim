@@ -10,6 +10,9 @@ use Exception;
 
 class UserObjectTest extends TestCase {
 
+    /**
+     * @covers App\Application\CRUD\UserObject
+     */
     public function testAction() {
         $userName = 'test' . time();
         $password = microtime(false);

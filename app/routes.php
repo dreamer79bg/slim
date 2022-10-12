@@ -30,6 +30,7 @@ return function (App $app) {
         $group->group('/users',   function (Group $group) {
             $group->get('/list', \App\Application\API\Users\ListAction::class);
             $group->put('[/]', \App\Application\API\Users\CreateAction::class);
+            $group->delete('/{id}', \App\Application\API\Users\DeleteAction::class);
         });
     });
     

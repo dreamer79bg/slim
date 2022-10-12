@@ -35,13 +35,6 @@ class UserPUTTest extends TestCase
             $id= $data['id'];
         }
         
-        //retry same
-        $request = $this->createJsonRequest('PUT', '/api/users',array('userName'=>$userName,'fullName'=>$fullName,'password'=>$password))->withHeader('Content-Type', 'application/json');
-        $response = $app->handle($request);
-        $status = $response->getStatusCode();
-        
-        $this->assertEquals(400, $status);
-        
         //delete the user if needed
         if (!empty($id)) {
             $request = $this->createRequest('DELETE', '/api/users/'.$id);

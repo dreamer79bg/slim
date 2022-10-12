@@ -32,6 +32,7 @@ return function (App $app) {
             $group->put('[/]', \App\Application\API\Users\CreateAction::class);
             $group->delete('/{id}', \App\Application\API\Users\DeleteAction::class);
             $group->get('/{id}', \App\Application\API\Users\GetAction::class);
+            $group->post('[/]', \App\Application\API\Users\UpdateAction::class);
         });
     });
     

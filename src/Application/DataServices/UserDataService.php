@@ -115,4 +115,31 @@ class UserDataService {
         $this->userObject->read($id);
         $this->userObject->delete();
     }
+    
+     /**
+     * updates a user from array 
+     * @param array $data
+     * @throws Exception
+     */
+    public function updateUser(array $data) {
+        if (isset($data['id'])) {
+            
+            $this->userObject->read($data['id']);
+            /*if (isset($data['userName'])) {
+                $this->userObject->userName= $data['userName'];
+            }*/ //userName is readonly
+            if (isset($data['fullName'])) {
+                $this->userObject->fullName= $data['fullName'];
+            }
+            if (isset($data['password'])) {
+                $this->userObject->password= $data['password'];
+            }
+            $this->userObject->save(); //if there is a problem with data exception will be thrown
+            
+            return $this->userObject->getId();
+        } else {
+            throw new Exception('Can not edit a user without id.');
+        }
+    }
+    
 }

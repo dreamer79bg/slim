@@ -6,7 +6,8 @@ use App\CoreComponents\MySQLQuery as Query;
 use Exception;
 use mysqli;
 
-class MySQLDatabase {
+class MySQLDatabase implements DatabaseInterface 
+{
 
     protected $dbconfig;
     protected $dbinstance;

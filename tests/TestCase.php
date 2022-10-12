@@ -16,35 +16,36 @@ use Slim\Psr7\Request as SlimRequest;
 use Slim\Psr7\Uri;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
+use DI\Container;
 
-class TestCase extends PHPUnit_TestCase
-{
+class TestCase extends PHPUnit_TestCase {
+
     use ProphecyTrait;
 
     /**
      * @return App
      * @throws Exception
      */
-    protected function getAppInstance(): App
-    {
+    protected function getAppInstance(): App {
         global $app;
-        
-        $app = AppFactory::create();
-        
-        $routes= require __DIR__ . '/../app/routes.php';
+        if (!is_object($app)) {
+            $app = AppFactory::create();
+            $app->addBodyParsingMiddleware();
 
-        $routes($app);
+            $routes = require __DIR__ . '/../app/routes.php';
 
-        //override the production route for testing
-        $app->setBasePath('');
+            $routes($app);
 
-        // Create Twig
-        $twig = Twig::create(__DIR__.'/../src/Views', ['cache' => __DIR__.'/../twigcache']);
+            //override the production route for testing
+            $app->setBasePath('');
 
-        // Add Twig-View Middleware
-        $app->add(TwigMiddleware::create($app, $twig));
+            // Create Twig
+            $twig = Twig::create(__DIR__ . '/../src/Views', ['cache' => __DIR__ . '/../twigcache']);
 
-        
+            // Add Twig-View Middleware
+            $app->add(TwigMiddleware::create($app, $twig));
+        }
+
         return $app;
     }
 
@@ -57,11 +58,11 @@ class TestCase extends PHPUnit_TestCase
      * @return Request
      */
     protected function createRequest(
-        string $method,
-        string $path,
-        array $headers = [],//'HTTP_ACCEPT' => '*;application/json'
-        array $cookies = [],
-        array $serverParams = []
+            string $method,
+            string $path,
+            array $headers = [], //'HTTP_ACCEPT' => '*;application/json'
+            array $cookies = [],
+            array $serverParams = []
     ): Request {
         $uri = new Uri('', '', 80, $path);
         $handle = fopen('php://temp', 'w+');
@@ -74,6 +75,18 @@ class TestCase extends PHPUnit_TestCase
 
         return new SlimRequest($method, $uri, $h, $cookies, $serverParams, $stream);
     }
+
+    protected function createJsonRequest(string $method, $uri, array $data = null): SlimRequest {
+        $request = $this->createRequest($method, $uri);
+
+        if ($data !== null) {
+            $request->getBody()->write((string) json_encode($data));
+            $request->getBody()->rewind();
+        }
+
+        return $request->withHeader('Content-Type', 'application/json');
+    }
+
 }
 
 /*

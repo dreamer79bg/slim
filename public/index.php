@@ -9,6 +9,8 @@ global $app;
 
 $app = AppFactory::create();
 
+$app->addBodyParsingMiddleware();
+
 $routes= require __DIR__ . '/../app/routes.php';
 
 $routes($app);

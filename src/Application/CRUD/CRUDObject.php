@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\CRUD;
 
-use App\CoreComponents\MySQLDatabase as Database;
+use App\CoreComponents\DatabaseConnection;
 use Exception;
+use App\CoreComponents\DatabaseInterface;
 
 abstract class CRUDObject {
 
@@ -43,7 +44,7 @@ abstract class CRUDObject {
     protected array $_validators = array(
     );
     
-    protected Database $_database;
+    protected DatabaseInterface $_database;
     protected array $_data = array();
     protected array $_tableKeyAttribute = array(); //attributeName,fieldName,type
     protected array $_attributeTypes = array();
@@ -51,10 +52,10 @@ abstract class CRUDObject {
     protected array $_setterPreprocessors= array();
     protected array $_attributeToField=array();
         
-
     public function __construct($databaseKey = null) {
-        $this->_database = new Database();
 
+        $this->_database= DatabaseConnection::getDatabase();
+        
         reset($this->_dataFields);
         foreach ($this->_dataFields as $fieldName => $attributeData) {
             if (!empty($attributeData['isPrimary'])) {
@@ -79,7 +80,22 @@ abstract class CRUDObject {
             $this->read($databaseKey);
         }
     }
+    
+    public function getTableName() {
+        return $this->_TABLENAME;
+    }
+    
+    public function getDeletedWhere() {
+        return $this->_REALDELETE?'':sprintf(' and %1$s=0 ', $this->_DELETEDFIELDNAME);
+    }
 
+    public function getFieldByAttribute($attributeName) {
+        if (!isset($this->_attributeToField[$attributeName])) {
+            return null;
+        }
+        return $this->_attributeToField[$attributeName];
+    }
+    
     protected function clearData() {
         $this->_data = array();
         reset($this->_dataFields);
@@ -98,6 +114,10 @@ abstract class CRUDObject {
 
     protected function getEscapedTableKeyField() {
         return $this->_database->escapeFieldName($this->_tableKeyAttribute[1]);
+    }
+    
+    public function getTableKeyField() {
+        return $this->_tableKeyAttribute[1];
     }
 
     protected function getEscapedTableKeyValue() {

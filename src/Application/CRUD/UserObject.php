@@ -65,16 +65,16 @@ class UserObject extends CRUDObject {
         'password' => 'notEmptyValidator',
     );
 
-    protected function encryptPassword($value) {
+    static function encryptPassword($value) {
         return sha1($value);
     }
 
     protected function userNameValidator($value): bool {
         $id=$this->getEscapedTableKeyValue();
         //check for same user name and different id
-        $sql = sprintf('select %3$s from %1$s where %5$s=%6$s and %2$s=0 and %3$s%4$s limit 1'
+        $sql = sprintf('select %3$s from %1$s where %5$s=%6$s %2$s and %3$s%4$s limit 1'
                 , $this->_database->escapeTableName($this->_TABLENAME)
-                , $this->_database->escapeFieldName($this->_DELETEDFIELDNAME)
+                , !$this->_REALDELETE?' and '.$this->_database->escapeFieldName($this->_DELETEDFIELDNAME).'=0 ':''
                 , $this->getEscapedTableKeyField()
                 , $id!='null'?'<>'.$id:' is not null'
                 , $this->_attributeToField['userName']

@@ -79,7 +79,7 @@ class UserObject extends CRUDObject {
                 , $id!='null'?'<>'.$id:' is not null'
                 , $this->_attributeToField['userName']
                 //6
-                , $this->_database->fullEscape($this->_data['userName'])
+                , $this->_database->fullEscape($value)
         );
         
         $res = $this->_database->query($sql);

@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use App\Application\API\JSONResponse;
+use Psr\Container\ContainerInterface;
 
 abstract class Action {
 
@@ -31,9 +32,7 @@ abstract class Action {
         $this->args = $args;
 
         try {
-            $response = $this->action();
-
-            return $this->response;
+            return $this->action();
         } catch (DomainRecordNotFoundException $e) {
             throw new HttpNotFoundException($this->request, $e->getMessage());
         }

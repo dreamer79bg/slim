@@ -26,10 +26,8 @@ class TestDataTest extends TestCase
         $payload = (string) $response->getBody();
         
         $data= json_decode($payload,true);
-        $this->assertContains(array('test'=>1), $data);
-        $this->assertArrayHasKey('data', $data);
+        $this->assertArrayHasKey('test', $data);
         $this->assertArrayNotHasKey('error', $data);
-        $this->assertArrayHasKey('statusCode', $data);
-        $this->assertEquals(200,$data['statusCode']);
+        $this->assertEquals(200,$response->getStatusCode());
     }
 }

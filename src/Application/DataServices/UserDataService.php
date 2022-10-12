@@ -18,6 +18,13 @@ class UserDataService {
         $this->userObject= new UserObject();
     }
     
+    /**
+     * Get the id of the user by user name and password
+     * Used for logins
+     * @param type $userName
+     * @param type $password
+     * @return type
+     */
     public function getLoginId($userName, $password) {
         $id=0;
         
@@ -40,7 +47,61 @@ class UserDataService {
         return $id;
     }
     
+    /**
+     * return an UserObject by id
+     * @param type $id
+     * @return UserObject
+     */
     public function getById($id): UserObject {
         return new UserObject($id);
+    }
+    
+    /**
+     * returns an array of user records(array each)
+     * @return array
+     */
+    public function getAll(): array {
+        $users= array();
+        $sql= sprintf('select %5$s as id, %2$s as userName, %3$s as fullName
+                       from %1$s 
+                       where 
+                       true %4$s
+                       order by userName'
+                , $this->userObject->getTableName()
+                , $this->userObject->getFieldByAttribute('userName')
+                , $this->userObject->getFieldByAttribute('fullName')
+                , $this->userObject->getDeletedWhere()
+                , $this->_database->escapeFieldName($this->userObject->getTableKeyField())
+                );
+        $res= $this->_database->query($sql);
+        
+        foreach ($res as $row) {
+            $users[]= $row;
+        }
+        
+        return $users;
+    }
+    
+    /**
+     * Creates a new user from array 
+     * @param array $data
+     * @throws Exception
+     */
+    public function createUser(array $data) {
+        if (!isset($data['id'])) {
+            $this->userObject->clearData();
+            if (isset($data['userName'])) {
+                $this->userObject->userName= $data['userName'];
+            }
+            if (isset($data['fullName'])) {
+                $this->userObject->fullName= $data['fullName'];
+            }
+            if (isset($data['password'])) {
+                $this->userObject->password= $data['password'];
+            }
+            $this->userObject->save(); //if there is a problem with data exception will be thrown
+        } else {
+            throw new Exception('Can not create a user with a given id.');
+        }
     }
 }

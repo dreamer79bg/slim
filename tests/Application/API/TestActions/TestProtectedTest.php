@@ -28,9 +28,7 @@ class TestProtectedTest extends TestCase {
 
         $data = json_decode($payload, true);
         $this->assertArrayHasKey('error', $data);
-        $this->assertArrayNotHasKey('data', $data);
-        $this->assertArrayHasKey('statusCode', $data);
-        $this->assertEquals(403, $data['statusCode']);
+        $this->assertEquals(403, $response->getStatusCode());
     }
 
     protected function testLogin($app) {
@@ -45,10 +43,8 @@ class TestProtectedTest extends TestCase {
             $response = $app->handle($request);
             $payload = (string) $response->getBody();
             $data = json_decode($payload, true);
-            $this->assertArrayHasKey('data', $data);
             $this->assertArrayNotHasKey('error', $data);
-            $this->assertArrayHasKey('statusCode', $data);
-            $this->assertEquals(200, $data['statusCode']);
+            $this->assertEquals(200, $response->getStatusCode());
         } catch (\Exception $e) {
             
         }
@@ -64,10 +60,8 @@ class TestProtectedTest extends TestCase {
         }
         $payload = (string) $response->getBody();
         $data = json_decode($payload, true);
-        $this->assertArrayHasKey('data', $data);
         $this->assertArrayNotHasKey('error', $data);
-        $this->assertArrayHasKey('statusCode', $data);
-        $this->assertEquals(200, $data['statusCode']);
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     protected function testBadLogin($app) {
@@ -84,9 +78,7 @@ class TestProtectedTest extends TestCase {
 
         $data = json_decode($payload, true);
         $this->assertArrayHasKey('error', $data);
-        $this->assertArrayNotHasKey('data', $data);
-        $this->assertArrayHasKey('statusCode', $data);
-        $this->assertEquals(403, $data['statusCode']);
+        $this->assertEquals(403, $response->getStatusCode());
 
         //rewrite all logins :D 
 
@@ -101,9 +93,7 @@ class TestProtectedTest extends TestCase {
 
         $data = json_decode($payload, true);
         $this->assertArrayHasKey('error', $data);
-        $this->assertArrayNotHasKey('data', $data);
-        $this->assertArrayHasKey('statusCode', $data);
-        $this->assertEquals(403, $data['statusCode']);
+        $this->assertEquals(403, $response->getStatusCode());
     }
 
     public function testAction() {

@@ -27,7 +27,6 @@ class TestErrorTest extends TestCase
         
         $data= json_decode($payload,true);
         $this->assertArrayHasKey('error', $data);
-        $this->assertArrayNotHasKey('data', $data);
         $this->assertArrayHasKey('statusCode', $data);
         $this->assertEquals(404,$data['statusCode']);
     }

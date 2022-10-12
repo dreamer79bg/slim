@@ -31,4 +31,12 @@ $app->add(
   ])
 );
 
-$app->run();
+
+try {
+    $app->run();
+} catch (\Exception $e) {
+    if (is_a($e, Slim\Exception\HttpMethodNotAllowedException::class)) {
+        http_response_code(404);
+        print file_get_contents(__DIR__.'/../src/Views/404.html');
+    }
+}

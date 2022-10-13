@@ -7,6 +7,9 @@ require __DIR__ . '/../vendor/autoload.php';
 
 global $app;
 
+global $publicRootDir;
+$publicRootDir=__DIR__;
+
 $app = AppFactory::create();
 
 $app->addBodyParsingMiddleware();

@@ -1,0 +1,91 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Application\CRUD;
+
+use App\Application\CRUD\CRUDObject;
+use Exception;
+
+/**
+ * @property int $id 
+ * @property string $userName
+ * @property string $fullName
+ * @property string $password
+ * @property string $createdAt
+ */
+class PostObject extends CRUDObject {
+
+    const TABLENAME = 'posts';
+    const REALDELETE = false;
+    const DELETEDFIELDNAME = 'deleted';
+
+    public function __construct($databaseKey = null) {
+        $this->_TABLENAME = self::TABLENAME;
+        $this->_REALDELETE = self::REALDELETE;
+        $this->_DELETEDFIELDNAME = self::DELETEDFIELDNAME;
+
+        parent::__construct($databaseKey);
+    }
+
+    /**
+     * field=>array(
+     * 'attribute'=>
+     * ,'type'=> bool, string, datetime, int, float for mysql function calls such as now() - @now() etc.
+     * ,'isPrimary'=>bool/int
+     * ,'canNotChange'=>bool/int
+     * ) for table fields
+     * 
+     * @var array
+     */
+    protected array $_dataFields = array(
+        'id' => array('attribute' => 'id', 'type' => 'int', 'isPrimary' => true, 'canNotChange' => true),
+        'title' => array('attribute' => 'title', 'type' => 'string'),
+        'userid' => array('attribute' => 'userId', 'type' => 'int', 'canNotChange' => true),
+        //'categoryid' => array('attribute' => 'categoryId', 'type' => 'int'),
+        'imagefile' => array('attribute' => 'imageFile', 'type' => 'string'),
+        'created' => array('attribute' => 'createdAt', 'type' => '@now()', 'canNotChange' => true),
+        'lastupdated' => array('attribute' => 'lastUpdated', 'type' => '@now()'),
+        'shortdesc' => array('attribute' => 'shortDesc', 'type' => 'string'),
+        'content' => array('attribute' => 'content', 'type' => 'string'),
+        'featuredpos' => array('attribute' => 'featuredPos', 'type' => 'int'),
+    );
+
+    /**
+     * name=>array(class,id field) for links by other fields
+     * name=>class - for links by id
+     * 
+     * @var array
+     */
+    protected array $_nestedObjects = array(
+    );
+
+    /**
+     * array of validator method names - fieldname=>validator method / fieldname=>array(validator method)
+     * @var array
+     */
+    protected array $_validators = array(
+        'title' => array('notEmptyValidator'),
+        'content' => 'notEmptyValidator',
+        'imageFile' => 'notEmptyValidator',
+        'shortDesc' => 'notEmptyValidator',
+        'userId' => 'notEmptyValidator'
+    );
+
+    /**
+     * attribute=>preprocessor method
+     * @var array
+     */
+     protected array $_setterPreprocessors = array(
+         'imageFile'=>'preprocessImage'
+     );
+
+    /**
+     * if value contains binary save it to file and return file path :)
+     * @param type $value
+     */
+    protected function preprocessImage($value) {
+       return $value;//tbd 
+    }
+    
+}

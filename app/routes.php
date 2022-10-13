@@ -35,6 +35,14 @@ return function (App $app) {
            // $group->post('[/]', \App\Application\API\Users\UpdateAction::class);
             $group->post('[/[{id}]]', \App\Application\API\Users\UpdateAction::class);
         });
+        
+        $group->group('/posts',   function (Group $group) {
+            $group->get('/list', \App\Application\API\Posts\ListAction::class);
+            $group->put('[/]', \App\Application\API\Posts\CreateAction::class);
+            $group->delete('/{id}', \App\Application\API\Posts\DeleteAction::class);
+            $group->get('/{id}', \App\Application\API\Posts\GetAction::class);
+            $group->post('[/[{id}]]', \App\Application\API\Posts\UpdateAction::class);
+        });
     });
     
     $app->group('/admin', function (Group $group) {

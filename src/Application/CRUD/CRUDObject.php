@@ -47,12 +47,19 @@ abstract class CRUDObject {
      */
     protected array $_validators = array(
     );
+    
+    /**
+     * attribute=>preprocessor method
+     * @var array
+     */
+     protected array $_setterPreprocessors = array();
+    
     protected DatabaseInterface $_database;
     protected array $_data = array();
     protected array $_tableKeyAttribute = array(); //attributeName,fieldName,type
     protected array $_attributeTypes = array();
     protected array $_readOnlyAttributes = array();
-    protected array $_setterPreprocessors = array();
+   
     protected array $_attributeToField = array();
 
     public function __construct($databaseKey = null) {

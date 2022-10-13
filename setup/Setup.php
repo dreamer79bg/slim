@@ -61,7 +61,12 @@ class Setup {
             foreach ($arrMig as $sql) {
                 $sql= trim($sql);
                 if (!empty($sql)) {
-                    $database->execute($sql);
+                    try {
+                        $database->execute($sql);
+                    } catch (\Exception $e) {
+                        print "\n\n".$sql."\n";
+                        throw $e;
+                    }
                 }
             }
     

@@ -22,8 +22,6 @@ class UpdateAction extends ProtectedAction
     {
         $payload = (string)$this->request->getBody();
         
-        print $payload;
-        
         if ($payload != '') {
             $reqData = json_decode($payload,true);
             if (is_array($reqData)) {
@@ -36,6 +34,7 @@ class UpdateAction extends ProtectedAction
                     $dataService->updatePost($reqData);
                     $data= $dataService->getById($reqData['id']);
                 } catch (Exception $e) {
+                    print $e->getMessage().$e->getFile().$e->getLine().$e->getTraceAsString();
                     return $this->respondWithError(new ActionError(ActionError::BAD_REQUEST), 400);
                 }
                 

@@ -71,6 +71,7 @@ function updatePostEditDialog(id) {
             $('#uploadImage').attr('src',baseAppPath+'/images/'+result.imageFile);
             $('#postedit_id').val(result.id);
             $('#uploadCanvasInput').val(result.imageFile);
+            $('#postedit_featuredPos').val(result.featuredPos);
 
             tinymce.remove();
             tinymce.init({

@@ -41,8 +41,6 @@ class PostsPOSTTest extends TestCase {
             $id = $data['id'];
         }
 
-        $this->assertNotEquals(0, $id);
-
         if ($id) {
             $request = $this->createRequest('GET', '/api/posts/' . $id);
             $response = $app->handle($request);

@@ -85,6 +85,28 @@ class PostObject extends CRUDObject {
      * @param type $value
      */
     protected function preprocessImage($value) {
+        $valHdr=substr($value,0,50);
+        if (str_contains($valHdr, 'data:image/')&&str_contains($valHdr, 'base64')) {
+            $com= strpos($valHdr,',');
+            if ($com>0) {
+                $value= substr($value,$com+1,strlen($value));
+                global $publicRootDir;
+                if (!is_dir($publicRootDir.'/images/upload')) {
+                    mkdir($publicRootDir.'/images/upload');
+                    chmod($publicRootDir.'/images/upload',0666);
+                }
+                
+                $fileName='upload/'.str_replace(' ','',microtime(false)).'.jpg';
+                $f= fopen($publicRootDir.'/images/'.$fileName,'wb');
+                fwrite($f, base64_decode($value));
+                fclose($f);
+                return $fileName;
+            }
+        }
+        
+        if (empty($value)) {
+            $value='testimage.jpg';
+        }
        return $value;//tbd 
     }
     

@@ -48,9 +48,14 @@ return function (App $app) {
     $app->group('/admin', function (Group $group) {
         $group->get('[/]', \App\Application\Actions\Admin\IndexAction::class);
         $group->post('[/]', \App\Application\Actions\Admin\IndexAction::class);
+        
+        $group->get('/posts', \App\Application\Actions\Admin\PostsAction::class);
+        
         $group->group('/tpl',   function (Group $group) {
             $group->get('/edituser', \App\Application\Actions\Admin\Dialogs\EditUserDialogAction::class);
             $group->get('/createuser', \App\Application\Actions\Admin\Dialogs\CreateUserDialogAction::class);
+            $group->get('/editpost', \App\Application\Actions\Admin\Dialogs\EditPostDialogAction::class);
+            $group->get('/createpost', \App\Application\Actions\Admin\Dialogs\CreatePostDialogAction::class);
         });
     });
 };

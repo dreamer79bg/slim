@@ -22,6 +22,8 @@ class UpdateAction extends ProtectedAction
     {
         $payload = (string)$this->request->getBody();
         
+        print $payload;
+        
         if ($payload != '') {
             $reqData = json_decode($payload,true);
             if (is_array($reqData)) {

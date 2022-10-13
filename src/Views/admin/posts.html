@@ -1,0 +1,53 @@
+<div class="row" style="padding: 20px 0">
+                <div class="col-8">
+                    <h1>Edit Posts</h1>
+                </div>
+                <div class="col-4">
+                    <div class="text-right">
+                        <a class="btn btn-primary modaledit"
+                                       data-toggle="modal" data-target="#formModal" data-tpl="createPost">Create a new post</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-hover ajaxtable" id="poststable" data-datatype="posts">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">Short description</th>
+                                <th scope="col">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for post in posts %}
+                            <tr>
+                                <th scope="row">{{ post.title|e }}</th>
+                                <td>{{ post.shortDesc|e }}</td>
+                                <td><a href="#" class="modaledit" data-id="{{ post.id }}"
+                                       data-toggle="modal" data-target="#formModal" data-tpl="editPost">Edit</a> &nbsp; <a href="#" class="deletepost" data-id="{{ post.id }}">Delete</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <!--nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item active"  aria-current="page"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav-->
+                </div><!-- col12 -->
+            </div>
+        </div><!-- row -->

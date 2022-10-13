@@ -26,10 +26,14 @@ class CreateAction extends ProtectedAction
             if (is_array($reqData)) {
                 try {
                     $dataService = new PostDataService();
+                    $session = new SessionHelper();
+
+                    if ($session->exists('userId')) {
+                        $reqData['userId'] = $session->get('userId');
+                    }
                     $id= $dataService->createPost($reqData);
                     $data= $dataService->getById($id);
                 } catch (Exception $e) {
-                    
                     print $e->getMessage().$e->getFile().$e->getLine();
                     return $this->respondWithError(new ActionError(ActionError::BAD_REQUEST), 400);
                 }

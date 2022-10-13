@@ -33,7 +33,7 @@ function updateDataTable() {
                         var item = result[i];
 
                         tableBody.append('<tr><th scope="row">' + item.title + '</th><td>' + item.shortDesc + '</td><td><a href="#" class="modaledit" data-id="' + item.id + '"\n\
- data-toggle="modal" data-target="#formModal" data-tpl="Post">Edit</a> &nbsp; <a href="#" class="deletpost" data-id="' + item.id + '">Delete</a></td></tr>');
+ data-toggle="modal" data-target="#formModal" data-tpl="editPost">Edit</a> &nbsp; <a href="#" class="deletepost" data-id="' + item.id + '">Delete</a></td></tr>');
                     }
 
                 }

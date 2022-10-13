@@ -105,7 +105,7 @@ class PostObject extends CRUDObject {
         }
         
         if (empty($value)) {
-            $value='testimage.jpg';
+            $value='NoImage.png';
         }
        return $value;//tbd 
     }

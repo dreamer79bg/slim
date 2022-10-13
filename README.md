@@ -44,6 +44,33 @@ APIs:
 
 By default the application works on apache dir with a base /slim. If needed to run on other base just change $app->setBasePath('/slim'); in app/routes.php.
 
-By default the setup migrations install a use super / 12345678 .
+By default the setup migrations install a user super / 12345678 . Some predefined users and posts are also included.
 
-Admin is accessibe through /admin.
+Admin is accessibe through /admin. Example: http://127.0.0.1/slim/admin
+
+API is protected and for using it there must be a call to POST api/login with username and password(from database) before calling other methods.
+POST http://127.0.0.1/slim/api/login
+{
+	"username":"super",
+	"password":"12345678"
+}
+
+There is also api/logout call implemented.
+
+Example POST method:
+POST http://127.0.0.1/slim/api/users/225
+{
+        "userName":"super123544",
+	"password":"12345678",
+	"fullName":"123"
+}
+
+Example GET method:
+GET http://127.0.0.1/slim/api/posts/list
+GET http://127.0.0.1/slim/api/posts/1
+
+For CRUD operations there is an own pseudo-ORM object implemented that controls CRUD operations based on the table configuration, validators and preprocessors of each child class.
+
+There are own Database connection and query(Iterator for results) implemented.
+
+Tests should cover all core objects- CRUD, Database and Query, API actions, test html actions, login and logout through API, etc. 

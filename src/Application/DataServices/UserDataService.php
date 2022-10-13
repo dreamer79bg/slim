@@ -131,7 +131,7 @@ class UserDataService {
             if (isset($data['fullName'])) {
                 $this->userObject->fullName= $data['fullName'];
             }
-            if (isset($data['password'])) {
+            if (isset($data['password']) && !empty($data['password']) &&!empty(trim($data['password']))) {
                 $this->userObject->password= $data['password'];
             }
             $this->userObject->save(); //if there is a problem with data exception will be thrown

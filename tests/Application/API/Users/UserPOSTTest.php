@@ -48,7 +48,7 @@ class UserPOSTTest extends TestCase {
                 $this->assertEquals($fullName, $data['fullName']);
             }
 
-            $request = $this->createJsonRequest('POST', '/api/users', array('id' => $id, 'userName' => $userName, 'fullName' => 'EDIT' . $fullName, 'password' => $password))->withHeader('Content-Type', 'application/json');
+            $request = $this->createJsonRequest('POST', '/api/users/'.$id, array('id' => $id, 'userName' => $userName, 'fullName' => 'EDIT' . $fullName, 'password' => $password))->withHeader('Content-Type', 'application/json');
             $response = $app->handle($request);
             $status = $response->getStatusCode();
             $this->assertEquals(200, $status);
@@ -75,7 +75,7 @@ class UserPOSTTest extends TestCase {
         $this->doLogout();
 
         if ($id) {
-            $request = $this->createJsonRequest('POST', '/api/users', array('userName' => $userName, 'fullName' => 'EDIT' . $fullName, 'password' => $password))->withHeader('Content-Type', 'application/json');
+            $request = $this->createJsonRequest('POST', '/api/users/'.$id, array('userName' => $userName, 'fullName' => 'EDIT' . $fullName, 'password' => $password))->withHeader('Content-Type', 'application/json');
             $response = $app->handle($request);
             $status = $response->getStatusCode();
             $this->assertEquals(403, $status);

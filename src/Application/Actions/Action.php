@@ -98,4 +98,14 @@ abstract class Action
         
         return $this->response->withStatus($statusCode);
     }
+    
+    protected function renderModule(string $tplName, array $data=[]): string {
+        $response= clone $this->response;
+        $view = Twig::fromRequest($this->request);
+        
+        global $app;
+        $data= array('baseAppPath'=>$app->getBasePath())+$data;
+        
+        return $view->fetch($tplName, $data);
+    }
 }

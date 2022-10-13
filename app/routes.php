@@ -32,12 +32,17 @@ return function (App $app) {
             $group->put('[/]', \App\Application\API\Users\CreateAction::class);
             $group->delete('/{id}', \App\Application\API\Users\DeleteAction::class);
             $group->get('/{id}', \App\Application\API\Users\GetAction::class);
-            $group->post('[/]', \App\Application\API\Users\UpdateAction::class);
+           // $group->post('[/]', \App\Application\API\Users\UpdateAction::class);
+            $group->post('[/[{id}]]', \App\Application\API\Users\UpdateAction::class);
         });
     });
     
     $app->group('/admin', function (Group $group) {
         $group->get('[/]', \App\Application\Actions\Admin\IndexAction::class);
         $group->post('[/]', \App\Application\Actions\Admin\IndexAction::class);
+        $group->group('/tpl',   function (Group $group) {
+            $group->get('/edituser', \App\Application\Actions\Admin\Dialogs\EditUserDialogAction::class);
+            $group->get('/createuser', \App\Application\Actions\Admin\Dialogs\CreateUserDialogAction::class);
+        });
     });
 };

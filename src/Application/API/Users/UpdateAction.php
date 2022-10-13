@@ -21,10 +21,15 @@ class UpdateAction extends ProtectedAction
     protected function action(): Response
     {
         $payload = (string)$this->request->getBody();
+        
         if ($payload != '') {
             $reqData = json_decode($payload,true);
             if (is_array($reqData)) {
                 try {
+                    if (empty($reqData['id'])) {
+                        $reqData['id']= $this->request->getAttribute('id', null);
+                    }
+                    
                     $userService = new UserDataService();
                     $userService->updateUser($reqData);
                     $user= $userService->getById($reqData['id']);

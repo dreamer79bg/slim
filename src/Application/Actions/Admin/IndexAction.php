@@ -7,6 +7,7 @@ namespace App\Application\Actions\Admin;
 use App\Application\Actions\ProtectedAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Application\DataServices\UserDataService;
 
 class IndexAction extends ProtectedAction
 {
@@ -15,6 +16,10 @@ class IndexAction extends ProtectedAction
      */
     protected function action(): Response
     {
-         return $this->view('hello.html');
+        $userService= new UserDataService();
+        $data= $userService->getAll();
+        
+        $view= $this->renderModule('admin/users.html', ['users'=>$data]);
+        return $this->view('admin/index.html',['viewHTML'=>$view]);
     }
 }

@@ -18,8 +18,8 @@ return function (App $app) {
         return $response;
     });
 
-    $app->get($appBasePath . '/hellotest', \App\Application\Actions\TestActions\HelloWorldAction::class);
-    $app->get($appBasePath . '/twigtest', \App\Application\Actions\TestActions\TwigTestAction::class);
+    $app->get($appBasePath . '/hellotest', 'TestsController:hello');
+    $app->get($appBasePath . '/twigtest', 'TestsController:twig');
 
     $app->get($appBasePath . '[/]', 'IndexController:index');
 

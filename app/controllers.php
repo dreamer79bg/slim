@@ -31,4 +31,8 @@ return function (ContainerInterface $container) {
     $container['AdminDialogsController'] = function ($c) {
         return new \App\Application\Controllers\AdminDialogsController($c);
     };
+    
+    $container['TestsController'] = function ($c) {
+        return new \App\Application\Controllers\TestsController($c);
+    };
 };

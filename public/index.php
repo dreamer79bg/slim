@@ -21,7 +21,7 @@ $app = new \Slim\App($config);
 // Get container
 $container = $app->getContainer();
 
-// Register component on container
+// Register TWIG component on container
 $container['view'] = function ($container) {
     $view = new \Slim\Views\Twig(__DIR__.'/../src/Views', ['cache' => __DIR__.'/../twigcache']);
 
@@ -33,10 +33,17 @@ $container['view'] = function ($container) {
     return $view;
 };
 
+/**
+ * Initialize container elements for controllers used in routes
+ */
+$controllers= require __DIR__ . '/../app/controllers.php';
+$controllers($container);
+
 $routes= require __DIR__ . '/../app/routes.php';
 
 $routes($app);
-//create session
+
+//create session middleware
 $app->add(
   new \Slim\Middleware\Session([
     'name' => 'slimblog_session',
@@ -45,6 +52,8 @@ $app->add(
   ])
 );
 
+
+//run application
 try {
     $app->run();
 } catch (\Exception $e) {

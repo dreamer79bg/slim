@@ -67,6 +67,9 @@ class TestCase extends PHPUnit_TestCase {
                 return $view;
             };
 
+            $controllers = require __DIR__ . '/../app/controllers.php';
+            $controllers($container);
+
             $routes = require __DIR__ . '/../app/routes.php';
 
             $routes($app);

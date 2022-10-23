@@ -24,8 +24,8 @@ return function (App $app) {
         $group->get('/test', \App\Application\API\TestActions\TestDataAction::class);
         $group->get('/testerror', \App\Application\API\TestActions\TestErrorAction::class);
         $group->get('/testprotected', \App\Application\API\TestActions\TestProtectedAction::class);
-        $group->post('/login', \App\Application\API\Security\LoginAction::class);
-        $group->get('/logout', \App\Application\API\Security\LogoutAction::class);
+        $group->post('/login', 'SecurityController:login');//\App\Application\API\Security\LoginAction::class);
+        $group->get('/logout', 'SecurityController:logout');//\App\Application\API\Security\LogoutAction::class);
 
         $group->group('/users', function (App $group) {
             $group->get('/list', \App\Application\API\Users\ListAction::class);

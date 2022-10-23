@@ -9,7 +9,7 @@ use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
     $appBasePath = $app->getContainer()->get('settings')['basePath'];
-    
+
     $app->options($appBasePath . '/{routes:.*}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
@@ -18,14 +18,14 @@ return function (App $app) {
     $app->get($appBasePath . '/hellotest', \App\Application\Actions\TestActions\HelloWorldAction::class);
     $app->get($appBasePath . '/twigtest', \App\Application\Actions\TestActions\TwigTestAction::class);
 
-    $app->get($appBasePath.'[/]', \App\Application\Actions\Index\IndexAction::class);
+    $app->get($appBasePath . '[/]', \App\Application\Actions\Index\IndexAction::class);
 
     $app->group($appBasePath . '/api', function (App $group) {
         $group->get('/test', \App\Application\API\TestActions\TestDataAction::class);
         $group->get('/testerror', \App\Application\API\TestActions\TestErrorAction::class);
         $group->get('/testprotected', \App\Application\API\TestActions\TestProtectedAction::class);
-        $group->post('/login', 'SecurityController:login');//\App\Application\API\Security\LoginAction::class);
-        $group->get('/logout', 'SecurityController:logout');//\App\Application\API\Security\LogoutAction::class);
+        $group->post('/login', 'SecurityController:login'); //\App\Application\API\Security\LoginAction::class);
+        $group->get('/logout', 'SecurityController:logout'); //\App\Application\API\Security\LogoutAction::class);
 
         $group->group('/users', function (App $group) {
             $group->get('/list', \App\Application\API\Users\ListAction::class);
@@ -37,11 +37,11 @@ return function (App $app) {
         });
 
         $group->group('/posts', function (App $group) {
-            $group->get('/list', \App\Application\API\Posts\ListAction::class);
-            $group->put('[/]', \App\Application\API\Posts\CreateAction::class);
-            $group->delete('/{id}', \App\Application\API\Posts\DeleteAction::class);
-            $group->get('/{id}', \App\Application\API\Posts\GetAction::class);
-            $group->post('[/[{id}]]', \App\Application\API\Posts\UpdateAction::class);
+            $group->get('/list', 'APIPostsController:list');
+            $group->put('[/]', 'APIPostsController:create');
+            $group->delete('/{id}', 'APIPostsController:delete'); //\App\Application\API\Posts\DeleteAction::class);
+            $group->get('/{id}', 'APIPostsController:get'); //\App\Application\API\Posts\GetAction::class);
+            $group->post('[/[{id}]]', 'APIPostsController:update');
         });
     });
 

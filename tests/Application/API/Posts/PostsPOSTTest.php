@@ -31,7 +31,7 @@ class PostsPOSTTest extends TestCase {
         );
         $request = $this->createJsonRequest('PUT', '/api/posts', $postData)->withHeader('Content-Type', 'application/json'
         );
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $payload = (string) $response->getBody();
         $this->assertEquals(200, $status);
@@ -43,7 +43,7 @@ class PostsPOSTTest extends TestCase {
 
         if ($id) {
             $request = $this->createRequest('GET', '/api/posts/' . $id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
 
             $this->assertEquals(200, $status);
 
@@ -61,12 +61,12 @@ class PostsPOSTTest extends TestCase {
             }
 
             $request = $this->createJsonRequest('POST', '/api/posts/' . $id, array('id' => $id, 'title' => 'EDIT' . $postData['title']) + $postData)->withHeader('Content-Type', 'application/json');
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(200, $status);
 
             $request = $this->createRequest('GET', '/api/posts/' . $id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(200, $status);
             if ($status == 200) {
@@ -78,7 +78,7 @@ class PostsPOSTTest extends TestCase {
             //delete the user if needed
             if (!empty($id)) {
                 $request = $this->createRequest('DELETE', '/api/posts/' . $id);
-                $response = $app->handle($request);
+                $response = $this->handleRequest($request);
                 $status = $response->getStatusCode();
                 $this->assertEquals(200, $status);
             }
@@ -87,7 +87,7 @@ class PostsPOSTTest extends TestCase {
 
         if ($id) {
             $request = $this->createJsonRequest('POST', '/api/posts', $postData)->withHeader('Content-Type', 'application/json');
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $payload = (string) $response->getBody();
             $this->assertEquals(403, $status);

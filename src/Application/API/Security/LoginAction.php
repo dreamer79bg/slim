@@ -18,10 +18,10 @@ class LoginAction extends Action {
      */
     protected function action(): Response {
         $payload = (string)$this->request->getBody();
-
+        
         if ($payload != '') {
-            $reqData = $this->request->getParsedBody();//json_decode($payload, true);
-
+            $reqData = json_decode($payload, true);
+            
             if (is_array($reqData) && isset($reqData['username']) && isset($reqData['password'])) {
                 $userService = new UserDataService();
 

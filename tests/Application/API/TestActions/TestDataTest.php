@@ -21,7 +21,7 @@ class TestDataTest extends TestCase
         $request = $this->createRequest('GET', '/api/test');
         
         try {
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
 
         } catch (\Exception $e) {
             

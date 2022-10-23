@@ -1,7 +1,6 @@
 <?php
-use Slim\Factory\AppFactory;
+use Slim\App;
 use Slim\Views\Twig;
-use Slim\Views\TwigMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -10,21 +9,33 @@ global $app;
 global $publicRootDir;
 $publicRootDir=__DIR__;
 
-$app = AppFactory::create();
+$mainConfig= require __DIR__ . '/../app/mainconfig.php';
 
-$app->addBodyParsingMiddleware();
+$config = [
+    'settings' => $mainConfig + [
+        'displayErrorDetails' => true,
+    ] 
+];
+$app = new \Slim\App($config);
+
+// Get container
+$container = $app->getContainer();
+
+// Register component on container
+$container['view'] = function ($container) {
+    $view = new \Slim\Views\Twig(__DIR__.'/../src/Views', ['cache' => __DIR__.'/../twigcache']);
+
+    // Instantiate and add Slim specific extension
+    $router = $container->get('router');
+    $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
+    $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
+
+    return $view;
+};
 
 $routes= require __DIR__ . '/../app/routes.php';
 
 $routes($app);
-
-// Create Twig
-$twig = Twig::create(__DIR__.'/../src/Views', ['cache' => __DIR__.'/../twigcache']);
-
-// Add Twig-View Middleware
-$app->add(TwigMiddleware::create($app, $twig));
-
-
 //create session
 $app->add(
   new \Slim\Middleware\Session([
@@ -34,7 +45,6 @@ $app->add(
   ])
 );
 
-
 try {
     $app->run();
 } catch (\Exception $e) {
@@ -43,3 +53,8 @@ try {
         print file_get_contents(__DIR__.'/../src/Views/404.html');
     }
 }
+
+
+
+
+

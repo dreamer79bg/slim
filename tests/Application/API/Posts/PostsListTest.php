@@ -20,7 +20,7 @@ class PostsListTest extends TestCase
         $app = $this->getAppInstance();
       
         $request = $this->createRequest('GET', '/api/posts/list');
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $this->assertEquals(200, $status);
         $payload= (string) $response->getBody();
@@ -37,7 +37,7 @@ class PostsListTest extends TestCase
 
         $this->doLogout();
         $request = $this->createRequest('GET', '/api/posts/list');
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $this->assertEquals(403, $status);
 

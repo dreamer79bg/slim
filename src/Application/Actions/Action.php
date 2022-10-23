@@ -33,7 +33,7 @@ abstract class Action
         $this->request = $request;
         $this->response = $response;
         $this->args = $args;
-
+        
         try {
             return $this->action();
         } catch (DomainRecordNotFoundException $e) {
@@ -89,23 +89,20 @@ abstract class Action
     }
     
     protected function view(string $tplName, array $data=[], int $statusCode=200): Response {
-        $view = Twig::fromRequest($this->request);
         
         global $app;
-        $data= array('baseAppPath'=>$app->getBasePath())+$data;
-        
-        $view->render($this->response, $tplName, $data);
-        
+        $data= array('baseAppPath'=>'/slim')+$data;
+        $app->getContainer()->get('view')->render($this->response, $tplName, $data);
         return $this->response->withStatus($statusCode);
     }
     
     protected function renderModule(string $tplName, array $data=[]): string {
         $response= clone $this->response;
-        $view = Twig::fromRequest($this->request);
-        
         global $app;
-        $data= array('baseAppPath'=>$app->getBasePath())+$data;
+        $data= array('baseAppPath'=>'/slim')+$data;
         
-        return $view->fetch($tplName, $data);
+        return $app->getContainer()->get('view')->fetch($tplName, $data);
     }
 }
+
+        

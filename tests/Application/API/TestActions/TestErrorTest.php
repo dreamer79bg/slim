@@ -21,7 +21,7 @@ class TestErrorTest extends TestCase
         $request = $this->createRequest('GET', '/api/testerror');
         
         try {
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
 
         } catch (\Exception $e) {
             

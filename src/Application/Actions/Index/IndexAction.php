@@ -26,7 +26,7 @@ class IndexAction extends Action {
         } catch (\Exception $e) {
             
         }
-
+        global $app;
         return $this->view('index.html', ['viewHTML' => $html]);
     }
 

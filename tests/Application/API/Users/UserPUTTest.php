@@ -26,7 +26,7 @@ class UserPUTTest extends TestCase
         
         $id=0;
         $request = $this->createJsonRequest('PUT', '/api/users',array('userName'=>$userName,'fullName'=>$fullName,'password'=>$password))->withHeader('Content-Type', 'application/json');
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $this->assertEquals(200, $status);
         if ($status==200) {
@@ -38,7 +38,7 @@ class UserPUTTest extends TestCase
         //delete the user if needed
         if (!empty($id)) {
             $request = $this->createRequest('DELETE', '/api/users/'.$id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(200, $status);
         }
@@ -49,7 +49,7 @@ class UserPUTTest extends TestCase
         
         //try with id 
         $request = $this->createJsonRequest('PUT', '/api/users',array('id'=>123,'userName'=>$userName,'fullName'=>$fullName,'password'=>$password))->withHeader('Content-Type', 'application/json');
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $this->assertEquals(400, $status);
         
@@ -61,7 +61,7 @@ class UserPUTTest extends TestCase
 
         $this->doLogout();
         $request = $this->createJsonRequest('PUT', '/api/users',array('userName'=>$userName,'fullName'=>$fullName,'password'=>$password))->withHeader('Content-Type', 'application/json');
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $this->assertEquals(403, $status);
 

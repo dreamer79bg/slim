@@ -23,7 +23,7 @@ class TestCase extends MainTestCase {
                         $data)->withHeader('Content-Type', 'application/json');
 
         try {
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $payload = (string) $response->getBody();
             $data = json_decode($payload, true);
             $this->assertArrayHasKey('data', $data);
@@ -45,7 +45,7 @@ class TestCase extends MainTestCase {
         $request = $this->createRequest('GET', '/api/logout');
 
         try {
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
         } catch (\Exception $e) {
             print $e->getMessage();
         }

@@ -24,6 +24,7 @@ class UpdateAction extends ProtectedAction
         
         if ($payload != '') {
             $reqData = json_decode($payload,true);
+            
             if (is_array($reqData)) {
                 try {
                     if (empty($reqData['id'])) {

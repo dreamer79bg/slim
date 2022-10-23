@@ -26,7 +26,7 @@ class UserPOSTTest extends TestCase {
 
         $id = 0;
         $request = $this->createJsonRequest('PUT', '/api/users', array('userName' => $userName, 'fullName' => $fullName, 'password' => $password))->withHeader('Content-Type', 'application/json');
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $this->assertEquals(200, $status);
         if ($status == 200) {
@@ -39,7 +39,7 @@ class UserPOSTTest extends TestCase {
 
         if ($id) {
             $request = $this->createRequest('GET', '/api/users/' . $id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(200, $status);
             if ($status == 200) {
@@ -49,12 +49,12 @@ class UserPOSTTest extends TestCase {
             }
 
             $request = $this->createJsonRequest('POST', '/api/users/'.$id, array('id' => $id, 'userName' => $userName, 'fullName' => 'EDIT' . $fullName, 'password' => $password))->withHeader('Content-Type', 'application/json');
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(200, $status);
 
             $request = $this->createRequest('GET', '/api/users/' . $id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(200, $status);
             if ($status == 200) {
@@ -67,7 +67,7 @@ class UserPOSTTest extends TestCase {
             //delete the user if needed
             if (!empty($id)) {
                 $request = $this->createRequest('DELETE', '/api/users/' . $id);
-                $response = $app->handle($request);
+                $response = $this->handleRequest($request);
                 $status = $response->getStatusCode();
                 $this->assertEquals(200, $status);
             }
@@ -76,7 +76,7 @@ class UserPOSTTest extends TestCase {
 
         if ($id) {
             $request = $this->createJsonRequest('POST', '/api/users/'.$id, array('userName' => $userName, 'fullName' => 'EDIT' . $fullName, 'password' => $password))->withHeader('Content-Type', 'application/json');
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(403, $status);
         }

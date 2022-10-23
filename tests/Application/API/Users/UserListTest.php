@@ -24,7 +24,7 @@ class UserListTest extends TestCase
         $fullName = 'test testov';
         
         $request = $this->createRequest('GET', '/api/users/list');
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $this->assertEquals(200, $status);
         $payload= (string) $response->getBody();
@@ -40,7 +40,7 @@ class UserListTest extends TestCase
 
         $this->doLogout();
         $request = $this->createRequest('GET', '/api/users/list');
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $this->assertEquals(403, $status);
 

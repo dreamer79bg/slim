@@ -26,7 +26,7 @@ class UserGETTest extends TestCase {
 
         $id = 0;
         $request = $this->createJsonRequest('PUT', '/api/users', array('userName' => $userName, 'fullName' => $fullName, 'password' => $password))->withHeader('Content-Type', 'application/json');
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $this->assertEquals(200, $status);
         if ($status == 200) {
@@ -38,7 +38,7 @@ class UserGETTest extends TestCase {
         //delete the user if needed
         if (!empty($id)) {
             $request = $this->createRequest('GET', '/api/users/' . $id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(200, $status);
             if ($status == 200) {
@@ -50,12 +50,12 @@ class UserGETTest extends TestCase {
             }
 
             $request = $this->createRequest('DELETE', '/api/users/' . $id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(200, $status);
             
             $request = $this->createRequest('GET', '/api/users/' . $id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(400, $status);
             

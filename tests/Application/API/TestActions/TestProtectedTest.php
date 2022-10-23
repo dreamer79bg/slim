@@ -13,14 +13,14 @@ class TestProtectedTest extends TestCase {
         $request = $this->createRequest('GET', '/api/logout');
 
         try {
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
         } catch (\Exception $e) {
             print $e->getMessage();
         }
 
         $request = $this->createRequest('GET', '/api/testprotected');
         try {
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
         } catch (\Exception $e) {
             print $e->getMessage();
         }
@@ -40,7 +40,7 @@ class TestProtectedTest extends TestCase {
                         $data)->withHeader('Content-Type', 'application/json');
 
         try {
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $payload = (string) $response->getBody();
             $data = json_decode($payload, true);
             $this->assertArrayNotHasKey('error', $data);
@@ -54,7 +54,7 @@ class TestProtectedTest extends TestCase {
         $request = $this->createRequest('GET', '/api/testprotected');
 
         try {
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
         } catch (\Exception $e) {
             
         }
@@ -72,7 +72,7 @@ class TestProtectedTest extends TestCase {
                         '/api/login',
                         $data)->withHeader('Content-Type', 'application/json');
 
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
 
         $payload = (string) $response->getBody();
 
@@ -85,7 +85,7 @@ class TestProtectedTest extends TestCase {
         $request = $this->createRequest('GET', '/api/testprotected');
 
         try {
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
         } catch (\Exception $e) {
             
         }

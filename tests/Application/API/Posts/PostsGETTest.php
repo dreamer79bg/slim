@@ -28,9 +28,10 @@ class PostsGETTest extends TestCase {
         $request = $this->createJsonRequest('PUT', '/api/posts',$postData)->withHeader('Content-Type', 'application/json'
                     
                     );
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $status = $response->getStatusCode();
         $payload = (string) $response->getBody();
+       
         $this->assertEquals(200, $status);
         if (true||$status == 200) {
             $payload = (string) $response->getBody();
@@ -39,7 +40,7 @@ class PostsGETTest extends TestCase {
         }
 
             $request = $this->createRequest('GET', '/api/posts/' . $id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             
             $this->assertEquals(200, $status);
           
@@ -61,12 +62,12 @@ class PostsGETTest extends TestCase {
         //delete the user if needed
         if (!empty($id)) {
             $request = $this->createRequest('DELETE', '/api/posts/' . $id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(200, $status);
             
             $request = $this->createRequest('GET', '/api/posts/' . $id);
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
             $status = $response->getStatusCode();
             $this->assertEquals(400, $status);
             

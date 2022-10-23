@@ -16,7 +16,7 @@ class TwigTestActionTest extends TestCase
         $container = $app->getContainer();
       
         $request = $this->createRequest('GET', '/twigtest');
-        $response = $app->handle($request);
+        $response = $this->handleRequest($request);
         $payload = trim((string) $response->getBody());
         
         $this->assertEquals('<h1>Hello</h1>', $payload);

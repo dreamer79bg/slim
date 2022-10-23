@@ -18,7 +18,7 @@ class HelloWorldActionTest extends TestCase
         $request = $this->createRequest('GET', '/hellotest');
         
         try {
-            $response = $app->handle($request);
+            $response = $this->handleRequest($request);
 
         } catch (\Exception $e) {
             

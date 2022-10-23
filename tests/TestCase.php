@@ -13,6 +13,7 @@ use Slim\Factory\AppFactory;
 use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request as SlimRequest;
+use Slim\Psr7\Response as SlimResponse;
 use Slim\Psr7\Uri;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
@@ -27,26 +28,61 @@ class TestCase extends PHPUnit_TestCase {
      * @throws Exception
      */
     protected function getAppInstance(): App {
+
         global $app;
         if (!is_object($app)) {
-            $app = AppFactory::create();
-            $app->addBodyParsingMiddleware();
+            if (session_status() === PHP_SESSION_NONE || session_id() === null) {
+                session_start();
+            }
+
+            $mainConfig = require __DIR__ . '/../app/mainconfig.php';
+
+            $config = [
+                'settings' => $mainConfig + [
+            'displayErrorDetails' => true,
+                ]
+            ];
+            $app = new \Slim\App($config);
+
+            $app->add(
+                    new \Slim\Middleware\Session([
+                        'name' => 'slimblog_session',
+                        'autorefresh' => true,
+                        'lifetime' => 600,
+                            ])
+            );
+
+// Get container
+            $container = $app->getContainer();
+
+// Register component on container
+            $container['view'] = function ($container) {
+                $view = new \Slim\Views\Twig(__DIR__ . '/../src/Views', ['cache' => __DIR__ . '/../twigcache']);
+
+                // Instantiate and add Slim specific extension
+                $router = $container->get('router');
+                $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
+                $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
+
+                return $view;
+            };
 
             $routes = require __DIR__ . '/../app/routes.php';
 
             $routes($app);
-
-            //override the production route for testing
-            $app->setBasePath('');
-
-            // Create Twig
-            $twig = Twig::create(__DIR__ . '/../src/Views', ['cache' => __DIR__ . '/../twigcache']);
-
-            // Add Twig-View Middleware
-            $app->add(TwigMiddleware::create($app, $twig));
         }
 
         return $app;
+    }
+
+    protected function handleRequest($request) {
+        $app = $this->getAppInstance();
+
+        /** @var Container $container */
+        $container = $app->getContainer();
+        $container['request'] = $request;
+        $container['response'] = new SlimResponse();
+        return $app->process($request, new SlimResponse());
     }
 
     /**
@@ -64,7 +100,9 @@ class TestCase extends PHPUnit_TestCase {
             array $cookies = [],
             array $serverParams = []
     ): Request {
-        $uri = new Uri('', '', 80, $path);
+        $base = $this->getAppInstance()->getContainer()->get('settings')['basePath'];
+
+        $uri = new Uri('', '', 80, $base . $path);
         $handle = fopen('php://temp', 'w+');
         $stream = (new StreamFactory())->createStreamFromResource($handle);
 
@@ -72,6 +110,8 @@ class TestCase extends PHPUnit_TestCase {
         foreach ($headers as $name => $value) {
             $h->addHeader($name, $value);
         }
+
+        //add base path to URI :D 
 
         return new SlimRequest($method, $uri, $h, $cookies, $serverParams, $stream);
     }

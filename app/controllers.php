@@ -24,7 +24,11 @@ return function (ContainerInterface $container) {
         return new \App\Application\Controllers\IndexController($c);
     };
     
-     $container['AdminController'] = function ($c) {
+    $container['AdminController'] = function ($c) {
         return new \App\Application\Controllers\AdminController($c);
+    };
+    
+    $container['AdminDialogsController'] = function ($c) {
+        return new \App\Application\Controllers\AdminDialogsController($c);
     };
 };

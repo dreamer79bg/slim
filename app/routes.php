@@ -55,10 +55,10 @@ return function (App $app) {
         $group->get('/posts', 'AdminController:posts');
 
         $group->group('/tpl', function (App $group) {
-            $group->get('/edituser', \App\Application\Actions\Admin\Dialogs\EditUserDialogAction::class);
-            $group->get('/createuser', \App\Application\Actions\Admin\Dialogs\CreateUserDialogAction::class);
-            $group->get('/editpost', \App\Application\Actions\Admin\Dialogs\EditPostDialogAction::class);
-            $group->get('/createpost', \App\Application\Actions\Admin\Dialogs\CreatePostDialogAction::class);
+            $group->get('/edituser', 'AdminDialogsController:editUser');
+            $group->get('/createuser', 'AdminDialogsController:createUser');
+            $group->get('/editpost', 'AdminDialogsController:editPost');
+            $group->get('/createpost', 'AdminDialogsController:createPost');
         });
     });
 };

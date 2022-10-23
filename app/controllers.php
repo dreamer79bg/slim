@@ -14,4 +14,8 @@ return function (ContainerInterface $container) {
     $container['APIUsersController'] = function ($c) {
         return new \App\Application\Controllers\APIUsersController($c);
     };
+    
+    $container['APITestsController'] = function ($c) {
+        return new \App\Application\Controllers\APITestsController($c);
+    };
 };

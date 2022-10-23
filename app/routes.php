@@ -7,6 +7,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
+/**
+ * As invokable actions are considered as using a skeleton app for the task even though this is one of the standard ways for creating routes in SLIM they are switched to controllers
+ */
 return function (App $app) {
     $appBasePath = $app->getContainer()->get('settings')['basePath'];
 
@@ -21,11 +24,11 @@ return function (App $app) {
     $app->get($appBasePath . '[/]', \App\Application\Actions\Index\IndexAction::class);
 
     $app->group($appBasePath . '/api', function (App $group) {
-        $group->get('/test', \App\Application\API\TestActions\TestDataAction::class);
-        $group->get('/testerror', \App\Application\API\TestActions\TestErrorAction::class);
-        $group->get('/testprotected', \App\Application\API\TestActions\TestProtectedAction::class);
-        $group->post('/login', 'SecurityController:login'); //\App\Application\API\Security\LoginAction::class);
-        $group->get('/logout', 'SecurityController:logout'); //\App\Application\API\Security\LogoutAction::class);
+        $group->get('/test', 'APITestsController:data');
+        $group->get('/testerror', 'APITestsController:error');
+        $group->get('/testprotected', 'APITestsController:protected');
+        $group->post('/login', 'SecurityController:login'); 
+        $group->get('/logout', 'SecurityController:logout');
 
         $group->group('/users', function (App $group) {
             $group->get('/list', 'APIUsersController:list');
@@ -39,8 +42,8 @@ return function (App $app) {
         $group->group('/posts', function (App $group) {
             $group->get('/list', 'APIPostsController:list');
             $group->put('[/]', 'APIPostsController:create');
-            $group->delete('/{id}', 'APIPostsController:delete'); //\App\Application\API\Posts\DeleteAction::class);
-            $group->get('/{id}', 'APIPostsController:get'); //\App\Application\API\Posts\GetAction::class);
+            $group->delete('/{id}', 'APIPostsController:delete');
+            $group->get('/{id}', 'APIPostsController:get'); 
             $group->post('[/[{id}]]', 'APIPostsController:update');
         });
     });

@@ -57,7 +57,7 @@ class TestCase extends PHPUnit_TestCase {
 
 // Register component on container
             $container['view'] = function ($container) {
-                $view = new \Slim\Views\Twig(__DIR__ . '/../src/Views', ['cache' => __DIR__ . '/../twigcache']);
+                $view = new \Slim\Views\Twig(__DIR__ . '/../src/Application/Views', ['cache' => __DIR__ . '/../twigcache']);
 
                 // Instantiate and add Slim specific extension
                 $router = $container->get('router');

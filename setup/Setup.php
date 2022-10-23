@@ -54,6 +54,32 @@ class Setup {
         }
     }
 
+     static function clearTwigCache() {
+        print "\nClearing TWIG cache...\n";
+        
+        if (stripos(PHP_OS,'linux')!==false) {
+            $pathSep= '/';
+        } else {
+            $pathSep= '\\';
+        }
+        
+        $path= realpath(__DIR__.'/..').$pathSep.'twigcache';
+        
+        if (stripos(PHP_OS,'linux')!==false) {
+                if (file_exists($path)) {
+                    exec('rm -rf "' . realpath($path).'"');
+                }
+                mkdir($path);
+                chmod($path, 0764); //RWX RW R
+            } else {
+                if (file_exists($path)) {
+                    exec('rd /s /q "' . realpath($path).'"');
+                }
+
+                mkdir($path);
+            }
+    }
+    
     /**
      * Reads .sql files from migrations directory and executes them in alphabetical order if not marked as already executed in 
      * the migrationslog table.
@@ -149,6 +175,7 @@ class Setup {
         self::$publicDirPath = realpath($path);
         
         self::copyPublicPackages();
+        self::clearTwigCache();
 
         self::executeMigrations();
         

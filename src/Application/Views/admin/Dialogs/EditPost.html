@@ -25,6 +25,16 @@
         <input type='button' id='btnLoad' value='Load image' onclick='document.getElementById("imgfileUpload").click()' class="btn btn-secondary"/>
 
         <div class="form-group">
+            <label for="postedit_featuredpos" class="col-form-label">Featured position:</label>
+            <select class="form-control" id="postedit_featuredPos" name="featuredPos">
+                <option value="0" selected></option>
+                <option value="3">Large featured</option>
+                <option value="2">Small featured 1</option>
+                <option value="1">Small featured 2</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
             <label for="postedit_username" class="col-form-label">Title:</label>
             <input type="text" class="form-control" id="postedit_title" name="title">
         </div>

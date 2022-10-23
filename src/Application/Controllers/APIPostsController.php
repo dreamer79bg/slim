@@ -115,7 +115,7 @@ class APIPostsController extends AppController {
                         $dataService->updatePost($reqData);
                         $data = $dataService->getById($reqData['id']);
                     } catch (Exception $e) {
-                        return $this->respondJSONWithError($response,new ActionError(ActionError::BAD_REQUEST), 400);
+                        return $this->respondJSONWithError($response,self::ERROR_BAD_DATA.$e->getMessage(), 400);
                     }
 
                     return $this->respondJSON($response, array('status' => 'ok', 'id' => $data->id), 200);

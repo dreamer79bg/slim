@@ -9,10 +9,14 @@ use Exception;
 
 /**
  * @property int $id 
- * @property string $userName
- * @property string $fullName
- * @property string $password
+ * @property string $title
+ * @property string $shortDesc
+ * @property string $featuredPos
  * @property string $createdAt
+ * @property string $content
+ * @property string $imageFile
+ * @property string $lastUpdated
+ * @property string $userId
  */
 class PostObject extends CRUDObject {
 
@@ -108,6 +112,22 @@ class PostObject extends CRUDObject {
             $value='NoImage.png';
         }
        return $value;//tbd 
+    }
+    
+    protected function postProccess() {
+        if ($this->featuredPos>0) {
+            $id= $this->id;
+            
+            $sql= sprintf('update %1$s set %2$s=0 where %2$s=%3$d and %4$s<>%5$s'
+                    , $this->_database->escapeTableName($this->_TABLENAME)
+                    , $this->getFieldByAttribute('featuredPos')
+                    , $this->featuredPos
+                    , $this->getEscapedTableKeyField()
+                    , $this->getEscapedTableKeyValue()
+                    );
+            
+            $this->_database->execute($sql);
+        }
     }
     
 }

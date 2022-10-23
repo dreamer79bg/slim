@@ -115,11 +115,15 @@ abstract class CRUDObject {
      * @param string $attributeName
      * @return string
      */
-    public function getFieldByAttribute(string $attributeName): string {
+    public function getFieldByAttribute(string $attributeName, $escape=true): string {
         if (empty($attributeName) || !isset($this->_attributeToField[$attributeName])) {
             return null;
         }
-        return $this->_attributeToField[$attributeName];
+        if ($escape) {
+            return $this->_database->escapeFieldName($this->_attributeToField[$attributeName]);
+        } else {
+            return $this->_attributeToField[$attributeName];
+        }
     }
 
     /**
@@ -379,6 +383,8 @@ abstract class CRUDObject {
                     $this->_data[$attributeData['attribute']]->save();
                 }
             }
+            
+            $this->postProccess();
 
             $this->_database->commit();
         } catch (\Exception $e) {
@@ -387,6 +393,14 @@ abstract class CRUDObject {
         }
     }
 
+    /**
+     * Postprocessing hook
+     * Example: Change featuredPos on posts requires unsetting all others
+     */
+    protected function postProccess() {
+        
+    }
+    
     /**
      * Used to set id if needed
      * @param type $id

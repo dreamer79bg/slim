@@ -18,7 +18,7 @@ class IndexController extends AppController {
 
     public function index(Request $request, Response $response, array $args = []): Response {
         $dataService = new PostDataService();
-        $data = $dataService->getAll();
+        $data = $dataService->getAll(6);
 
         try {
             $html = '';
@@ -28,6 +28,20 @@ class IndexController extends AppController {
         } catch (\Exception $e) {
             
         }
-        return $this->respondHTML($response,'index.html', ['viewHTML' => $html]);
+        
+        $featuredData= $dataService->getFeatured();
+        $large= null;
+        $small=array();
+        
+        for ($i=0; $i<count($featuredData); $i++) {
+            if ($i==0) {
+                $large= $featuredData[$i];
+            } else {
+                $small[]= $featuredData[$i];
+            } 
+        }
+        
+        $featured= $this->fetchHTMLView('datablocks/featured.html', ['large'=>$large,'small'=>$small]);
+        return $this->respondHTML($response,'index.html', ['viewHTML' => $html, 'featured'=>$featured]);
     }
 }

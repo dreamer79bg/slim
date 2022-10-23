@@ -21,28 +21,35 @@ class Setup {
     static function copyPublicPackages() {
         print "\nCopying public packages...\n";
         
+        if (stripos(PHP_OS,'linux')!==false) {
+            $pathSep= '/';
+        } else {
+            $pathSep= '\\';
+        }
+        
         reset(self::$copyPackages);
         foreach (self::$copyPackages as $packageName => $packageDir) {
             $path = InstalledVersions::getInstallPath($packageName);
 
             $srcPath = realpath($path);
-            $toPath = realpath(self::$publicDirPath . '/' . $packageDir);
+            $toPath = realpath(self::$publicDirPath) . $pathSep . $packageDir;
 
             print "Copying package $packageName contents from $srcPath to $toPath...\n";
             
             if (stripos(PHP_OS,'linux')!==false) {
                 if (file_exists($toPath)) {
-                    exec('rm -rf "' . $toPath.'"');
+                    exec('rm -rf "' . realpath($toPath).'"');
                 }
                 mkdir($toPath);
                 chmod($toPath, 0764); //RWX RW R
-                exec('cp -R "' . $srcPath . '/*" "' . $toPath . '"');
+                exec('cp -R "' . $srcPath . '/*" "' . realpath($toPath) . '"');
             } else {
                 if (file_exists($toPath)) {
-                    exec('rd /s /q "' . $toPath.'"');
+                    exec('rd /s /q "' . realpath($toPath).'"');
                 }
+
                 mkdir($toPath);
-                exec('xcopy /s /q "' . $srcPath . '\*" "' . $toPath . '"');
+                exec('xcopy /s /q "' . $srcPath . '\*" "' . realpath($toPath) . '"');
             }
         }
     }
@@ -140,7 +147,7 @@ class Setup {
             $path = self::$publicDir;
         }
         self::$publicDirPath = realpath($path);
-
+        
         self::copyPublicPackages();
 
         self::executeMigrations();

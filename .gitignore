@@ -4,3 +4,5 @@
 composer.lock
 twigcache
 /public/images/upload
+/public/tinymce
+!/public/tinymce/.htaccess

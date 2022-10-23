@@ -13,6 +13,10 @@ use SlimSession\Helper as SessionHelper;
 /**
  * A custom controller class for MVC app
  * written by A. Markov
+ * 
+ * As invokable actions are considered as using a skeleton app for the task even though this is one of the standard ways for creating routes in SLIM they are switched to controllers.
+ * 
+ * There is no way to keep action classes as they will always produce code similar to the example application for SLIM
  */
 abstract class Controller {
 
@@ -41,12 +45,12 @@ abstract class Controller {
     }
 
     protected function respondHTML(Response $response, string $viewName, array $data=[], int $statusCode= 200) {
-        $this->view->render($response, $viewName, $data);
-        return $this->response->withStatus($statusCode);
+        $this->view->render($response, $viewName, $data+['baseAppPath'=>$this->container->get('settings')['basePath']]);
+        return $response->withStatus($statusCode);
     }
     
     protected function fetchHTMLView(string $viewName, array $data=[]) {
-        return $this->view->fetchBlock($viewName, $data+['baseAppPath'=>$this->container->get('settings')['basePath']]);
+        return $this->view->fetch($viewName, $data+['baseAppPath'=>$this->container->get('settings')['basePath']]);
     }
 
     protected function respondJSONWithError(Response $response, string $error = Error, int $statusCode = 200): Response {

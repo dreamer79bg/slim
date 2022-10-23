@@ -18,4 +18,9 @@ return function (ContainerInterface $container) {
     $container['APITestsController'] = function ($c) {
         return new \App\Application\Controllers\APITestsController($c);
     };
+    
+    
+    $container['IndexController'] = function ($c) {
+        return new \App\Application\Controllers\IndexController($c);
+    };
 };

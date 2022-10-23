@@ -21,7 +21,7 @@ return function (App $app) {
     $app->get($appBasePath . '/hellotest', \App\Application\Actions\TestActions\HelloWorldAction::class);
     $app->get($appBasePath . '/twigtest', \App\Application\Actions\TestActions\TwigTestAction::class);
 
-    $app->get($appBasePath . '[/]', \App\Application\Actions\Index\IndexAction::class);
+    $app->get($appBasePath . '[/]', 'IndexController:index');
 
     $app->group($appBasePath . '/api', function (App $group) {
         $group->get('/test', 'APITestsController:data');

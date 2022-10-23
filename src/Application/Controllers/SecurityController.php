@@ -19,14 +19,11 @@ class SecurityController extends AppController {
 
             if (is_array($reqData) && isset($reqData['username']) && isset($reqData['password'])) {
                 
-                $userService = new UserDataService();
-
-                if ($id = $userService->getLoginId($reqData['username'], $reqData['password'])) {
+                $this->securityService->doLogin($reqData['username'], $reqData['password']);
+                
+                if ($id = $this->securityService->getUserId()) {
+                    $userService= new UserDataService();
                     $user = $userService->getById($id);
-                    $this->session->set('userId', $id);
-                    $this->session->set('userName', $user->userName);
-                    $this->session->set('fullName', $user->fullName);
-
                     return $this->respondJSON($response,array('fullName' => $user->fullName), 200);
                 }
             }

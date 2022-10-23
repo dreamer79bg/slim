@@ -23,4 +23,8 @@ return function (ContainerInterface $container) {
     $container['IndexController'] = function ($c) {
         return new \App\Application\Controllers\IndexController($c);
     };
+    
+     $container['AdminController'] = function ($c) {
+        return new \App\Application\Controllers\AdminController($c);
+    };
 };

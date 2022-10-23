@@ -49,10 +49,10 @@ return function (App $app) {
     });
 
     $app->group($appBasePath . '/admin', function (App $group) {
-        $group->get('[/]', \App\Application\Actions\Admin\IndexAction::class);
-        $group->post('[/]', \App\Application\Actions\Admin\IndexAction::class);
+        $group->get('[/]', 'AdminController:index');
+        $group->post('[/]', 'AdminController:index');
 
-        $group->get('/posts', \App\Application\Actions\Admin\PostsAction::class);
+        $group->get('/posts', 'AdminController:posts');
 
         $group->group('/tpl', function (App $group) {
             $group->get('/edituser', \App\Application\Actions\Admin\Dialogs\EditUserDialogAction::class);

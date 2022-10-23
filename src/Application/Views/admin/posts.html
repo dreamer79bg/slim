@@ -16,6 +16,8 @@
                             <tr>
                                 <th scope="col">Title</th>
                                 <th scope="col">Short description</th>
+                                <th scope="col">Created At</th>
+                                <th scope="col">Created By</th>
                                 <th scope="col">&nbsp;</th>
                             </tr>
                         </thead>
@@ -24,6 +26,8 @@
                             <tr>
                                 <th scope="row">{{ post.title|e }}</th>
                                 <td>{{ post.shortDesc|e }}</td>
+                                <td>{{ post.createdAt|e }}</td>
+                                <td>{{ post.userFullName|e }}</td>
                                 <td><a href="#" class="modaledit" data-id="{{ post.id }}"
                                        data-toggle="modal" data-target="#formModal" data-tpl="editPost">Edit</a> &nbsp; <a href="#" class="deletepost" data-id="{{ post.id }}">Delete</a></td>
                             </tr>

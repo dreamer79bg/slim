@@ -10,4 +10,8 @@ return function (ContainerInterface $container) {
     $container['APIPostsController'] = function ($c) {
         return new \App\Application\Controllers\APIPostsController($c);
     };
+    
+    $container['APIUsersController'] = function ($c) {
+        return new \App\Application\Controllers\APIUsersController($c);
+    };
 };

@@ -28,12 +28,12 @@ return function (App $app) {
         $group->get('/logout', 'SecurityController:logout'); //\App\Application\API\Security\LogoutAction::class);
 
         $group->group('/users', function (App $group) {
-            $group->get('/list', \App\Application\API\Users\ListAction::class);
-            $group->put('[/]', \App\Application\API\Users\CreateAction::class);
-            $group->delete('/{id}', \App\Application\API\Users\DeleteAction::class);
-            $group->get('/{id}', \App\Application\API\Users\GetAction::class);
+            $group->get('/list', 'APIUsersController:list');
+            $group->put('[/]', 'APIUsersController:create');
+            $group->delete('/{id}', 'APIUsersController:delete');
+            $group->get('/{id}', 'APIUsersController:get');
             // $group->post('[/]', \App\Application\API\Users\UpdateAction::class);
-            $group->post('[/[{id}]]', \App\Application\API\Users\UpdateAction::class);
+            $group->post('[/[{id}]]', 'APIUsersController:update');
         });
 
         $group->group('/posts', function (App $group) {

@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `posts`;
 --!ENDQUERY--
 
 CREATE TABLE IF NOT EXISTS `posts` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `deleted` tinyint(4) NOT NULL DEFAULT 0,
   `title` varchar(400) COLLATE utf8_bin DEFAULT NULL,
   `userid` int(11) DEFAULT NULL,
@@ -12,12 +12,12 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `lastupdated` datetime NOT NULL,
   `shortdesc` varchar(500) COLLATE utf8_bin DEFAULT NULL,
   `content` longtext COLLATE utf8_bin DEFAULT NULL,
-  `featuredpos` int(11) DEFAULT NULL
+  `featuredpos` int(11) DEFAULT NULL,
+   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 --!ENDQUERY--
 
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `created` (`created`),
   ADD KEY `all cats by date` (`deleted`,`created`) USING BTREE,
   ADD KEY `per category` (`deleted`,`categoryid`,`created`) USING BTREE,
@@ -26,6 +26,10 @@ ALTER TABLE `posts`
   ADD KEY `featuredpos` (`featuredpos`);
 
 --!ENDQUERY--
+
+!!ALTER TABLE `posts` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
+--!ENDQUERY--
+
 INSERT IGNORE INTO `posts` (`id`, `deleted`, `title`, `userid`, `categoryid`, `imagefile`, `created`, `lastupdated`, `shortdesc`, `content`, `featuredpos`) VALUES
 (1, 0, 'Какво рече момчето? част 1', 1, NULL, 'testimage.jpg', '2022-10-13 08:01:17', '2022-10-13 11:11:02', 'Нещо се случило в Карнобат по време на гроздобера.', 'Нещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.\r\nНещо се случило в Карнобат по време на гроздобера.', 1),
 (2, 0, 'Test title 2022-10-13 08:36:36', 1, NULL, 'testimage5.jpg', '2022-10-13 09:36:36', '2022-10-13 09:36:36', 'Невероятно, но факт- извънземните имат бази на Венера.', 'Нещо си там да пишем.', 2),

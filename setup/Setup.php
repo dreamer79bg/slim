@@ -140,12 +140,21 @@ class Setup {
             reset($arrMig);
             foreach ($arrMig as $sql) {
                 $sql = trim($sql);
+                
+                $noException=0;
+                if (substr($sql,0,2)=='!!'){
+                    $sql= trim(substr($sql,2,strlen($sql)));
+                    $noException=1;
+                }
+                
                 if (!empty($sql)) {
                     try {
                         $database->execute($sql);
                     } catch (\Exception $e) {
-                        print "\n\n" . $sql . "\n";
-                        throw $e;
+                        if (!$noException) {
+                            print "\n\n" . $sql . "\n";
+                            throw $e;
+                        }
                     }
                 }
             }

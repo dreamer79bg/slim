@@ -38,7 +38,7 @@ class PostDataService {
         $users = new UserObject();
         $data = array();
         $sql = sprintf('select %1$s.%3$s as id, %1$s.%4$s as title, %1$s.%5$s as shortDesc, %1$s.%6$s as createdAt, %1$s.%7$s as userId, %1$s.%8$s as content,
-                    %1$s.%9$s as imageFile,%1$s.%12$s as featuredPos, %10$s.fullname as userFullName
+                    %1$s.%9$s as imageFile,%1$s.%12$s as featuredPos, %10$s.%14$s as userFullName
                        from %1$s  left join %10$s on %1$s.%7$s=%10$s.%11$s
                        where 
                        true %2$s
@@ -59,6 +59,7 @@ class PostDataService {
                 , $this->_database->escapeFieldName($users->getTableKeyField())
                 , $this->dataObject->getFieldByAttribute('featuredPos')
                 , $limit > 0 ? sprintf('limit %1$s%2$d', $start > 0 ? sprintf('%d,', $start) : '', $limit) : ''
+                , $this->_database->escapeFieldName($users->getFieldByAttribute('fullName'))
         );
         $res = $this->_database->query($sql);
 

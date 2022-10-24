@@ -17,7 +17,7 @@
             <header class="blog-header py-3">
                 <div class="row flex-nowrap justify-content-between align-items-center">
                     <div class="col-4 text-center">
-                        <a class="blog-header-logo text-dark" href="#">Slim blog</a>
+                        <a class="blog-header-logo text-dark" href="{{baseAppPath}}/">Slim blog</a>
                     </div>
                 </div>
             </header>
@@ -27,11 +27,18 @@
             <main role="main" class="container">
                 <div class="row">
                     <div class="col-md-8 blog-main">
+                        {{ postHTML | raw }}
+                        
                         <h3 class="pb-3 mb-4 font-italic border-bottom">
-                            Newest Posts
+                            {% if morePostsText is empty %} Newest Posts {% else %} {{ morePostsText }} {% endif %}
                         </h3>
 
                         {{ viewHTML | raw }}
+                        
+                        
+                        <nav class="blog-pagination" style="text-align: center">
+                            <a class="btn btn-outline-primary" href="#">Show all posts</a>
+                        </nav>
                     </div>
                     <aside class="col-md-4 blog-sidebar">
                         <div class="p-3 mb-3 bg-light rounded">
@@ -42,9 +49,6 @@
 
                 </div><!-- /.row -->
 
-                <nav class="blog-pagination" style="text-align: center">
-                    <a class="btn btn-outline-primary" href="#">Show all posts</a>
-                </nav>
 
             </main><!-- /.container -->
 

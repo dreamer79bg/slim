@@ -35,6 +35,10 @@ return function (ContainerInterface $container) {
         return new \App\Application\Controllers\TestsController($c);
     };
 
+    $container['PostsController'] = function ($c) {
+        return new \App\Application\Controllers\PostsController($c);
+    };
+    
     //Override the default Not Found Handler
     $container['notFoundHandler'] = function ($c) {
         return function ($request, $response) use ($c) {

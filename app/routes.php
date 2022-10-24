@@ -61,4 +61,8 @@ return function (App $app) {
             $group->get('/createpost', 'AdminDialogsController:createPost');
         });
     });
+    
+    $app->group($appBasePath . '/posts', function (App $group) {
+        $group->get('/{id}', 'PostsController:view');
+    });
 };

@@ -57,6 +57,15 @@ class UserDataService {
     }
     
     /**
+     * get even deleted users
+     * @param type $id
+     * @return array
+     */
+    public function getFullById($id): UserObject {
+        return new UserObject($id,true);
+    }
+    
+    /**
      * returns an array of user records(array each)
      * @return array
      */

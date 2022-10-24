@@ -9,7 +9,7 @@
             <div style="padding: 20px; display: block">
                 <h1 class="display-4 font-italic">{{large.title}}</h1>
                 <p class="lead my-3">{{large.shortDesc}}</p>
-                <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+                <p class="lead mb-0"><a href="{{baseAppPath}}/posts/{{large.id}}" class="text-white font-weight-bold">Continue reading...</a></p>
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
                 <div class="card-body d-flex flex-column align-items-start">
                     <!--strong class="d-inline-block mb-2 text-primary">World</strong-->
                     <h3 class="mb-0">
-                        <a class="text-dark" href="#">{{post.title}}</a>
+                        <a class="text-dark" href="{{baseAppPath}}/posts/{{post.id}}">{{post.title}}</a>
                     </h3>
                     <img class="card-img-right flex-auto d-none1 d-md-block" src="{{baseAppPath}}/images/{{post.imageFile}}" alt="Card image cap"
                          style="        object-fit: cover;
@@ -32,7 +32,7 @@
                          border-radius: 6px;">
                     <div class="mb-1 text-muted">{{post.createdAt}} by {{post.userFullName}}</div>
                     <p class="card-text mb-auto">{{post.shortDesc}}</p>
-                    <a href="#">Continue reading</a>
+                    <a href="{{baseAppPath}}/posts/{{post.id}}">Continue reading</a>
                 </div>
             </div>
         </div>

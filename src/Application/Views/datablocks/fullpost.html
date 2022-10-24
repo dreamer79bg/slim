@@ -1,0 +1,13 @@
+<div class="blog-post">
+    <h2 class="blog-post-title">{{ data.title }}</h2>
+    <p class="blog-post-meta">{{ data.createdAt }} by {{ data.userFullName }}</p>
+    <blockquote class="blockquote">{{ data.shortDesc }}</blockquote>
+    <img class="card-img-right flex-auto d-none1 d-md-block" src="{{ baseAppPath }}/images/{{ data.imageFile }}"
+         style="        object-fit: cover;
+         width: 100%;
+         max-height: 400px;
+         margin: 20px 0;
+         border-radius: 6px; float: left;">
+    <br style="clear:both"/>
+    {{ data.content|raw }}
+</div><!-- /.blog-post -->

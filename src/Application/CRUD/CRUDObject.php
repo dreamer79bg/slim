@@ -62,7 +62,7 @@ abstract class CRUDObject {
    
     protected array $_attributeToField = array();
 
-    public function __construct($databaseKey = null) {
+    public function __construct($databaseKey = null, $readDeleted= false) {
 
         $this->_database = DatabaseConnection::getDatabase();
 
@@ -88,6 +88,10 @@ abstract class CRUDObject {
             $this->clearData();
         } else {
             $this->read($databaseKey);
+        }
+        
+        if ($readDeleted) {
+            $this->_REALDELETE= true; //fake real delete to get soft deleted objects
         }
     }
 
@@ -504,7 +508,6 @@ abstract class CRUDObject {
         }
 
         if (!array_key_exists($name, $this->_data)) {
-            var_dump($this->_data);
             throw new \Exception('Can not set attributes not present in data ' . $name . ' ' . $this->_data[$name]);
         }
 
@@ -528,4 +531,19 @@ abstract class CRUDObject {
         return !empty($value);
     }
 
+    /**
+     * Get object contents as array
+     * @return array
+     */
+    public function asArray(): array {
+        $result= array();
+        
+        reset($this->_data);
+        foreach ($this->_data as $k=>$v) {
+            $result[$k]= $v;
+        }
+        
+        return $result;
+    }
+    
 }

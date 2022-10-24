@@ -12,6 +12,7 @@ The project uses:
 
 
 To have a clean install first open app/db.php and set dbname, dbuser and dbpass properly. 
+
     $dbconfig= array(
         'dbhost'=> '127.0.0.1',
         'dbuser'=> 'dbuser',
@@ -21,6 +22,7 @@ To have a clean install first open app/db.php and set dbname, dbuser and dbpass 
     );
 
 If you need to change the base path change app/mainconfig.php:
+
     'basePath' => '/slim', //change to empty or any other base path you want to use
 
 Base path is set initially as development is done on XAMPP for windows in a separate directory for the project.

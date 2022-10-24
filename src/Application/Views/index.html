@@ -19,9 +19,14 @@
                     <div class="col-4 text-center">
                         <a class="blog-header-logo text-dark" href="{{baseAppPath}}/">Slim blog</a>
                     </div>
+                    <div class="col-8 text-right">
+                        <a class="btn btn-outline-primary" href="{{ baseAppPath }}/admin">Go to site admin</a>
+                    </div>
                 </div>
             </header>
 
+            <br/><br/>
+            
             {{ featured | raw }}
 
             <main role="main" class="container">
@@ -35,10 +40,11 @@
 
                         {{ viewHTML | raw }}
                         
-                        
+                        {% if hideMoreButton is empty %}
                         <nav class="blog-pagination" style="text-align: center">
-                            <a class="btn btn-outline-primary" href="#">Show all posts</a>
+                            <a class="btn btn-outline-primary" href="{{baseAppPath}}/posts">Show all posts</a>
                         </nav>
+                        {% endif %}
                     </div>
                     <aside class="col-md-4 blog-sidebar">
                         <div class="p-3 mb-3 bg-light rounded">
@@ -54,6 +60,7 @@
 
             <footer class="blog-footer">
                 <p>This is a sample blog</p>
+                <!--p><a class="btn btn-outline-primary" href="{{ baseAppPath }}/admin">Go to site admin</a></p-->
             </footer>
 
             <!-- Back to top -->

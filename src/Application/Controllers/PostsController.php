@@ -20,32 +20,60 @@ class PostsController extends AppController {
         $dataService = new PostDataService();
         $id = $request->getAttribute('id');
 
+        $statusCode = 200;
+
+        $htmlPost = '';
         if ($id > 0) {
-            $data = $dataService->getById($id)->asArray();
-
-            $userService = new UserDataService();
-            $user = $userService->getFullById($data['userId']);
-
-            $data['userFullName'] = $user->fullName;
-
-            $htmlPost = $this->fetchHTMLView('datablocks/fullpost.html', ['data' => $data]);
-
-            $dataService = new PostDataService();
-            $data = $dataService->getAll(3);
-
             try {
-                $htmlNew = '';
-                foreach ($data as $row) {
-                    $htmlNew .= $this->fetchHTMLView('datablocks/post.html', ['data' => $row]);
-                }
-            } catch (\Exception $e) {
+                $data = $dataService->getById($id)->asArray();
+
+                $userService = new UserDataService();
+                $user = $userService->getFullById($data['userId']);
+
+                $data['userFullName'] = $user->fullName;
+
+                $htmlPost = $this->fetchHTMLView('datablocks/fullpost.html', ['data' => $data]);
+            } catch (Exception $e) {
                 
             }
-
-            return $this->respondHTML($response, 'index.html', ['postHTML' => $htmlPost, 'featured' => '', 'viewHTML' => $htmlNew]);
-        } else {
-            print '???';
         }
+
+        if (empty($htmlPost)) {
+            $htmlPost = $this->fetchHTMLView('datablocks/postnotfound.html', []);
+            $statusCode = 404;
+        }
+
+        $dataService = new PostDataService();
+        $data = $dataService->getAll(3);
+
+        try {
+            $htmlNew = '';
+            foreach ($data as $row) {
+                $htmlNew .= $this->fetchHTMLView('datablocks/post.html', ['data' => $row]);
+            }
+        } catch (\Exception $e) {
+            
+        }
+
+        return $this->respondHTML($response, 'index.html', ['postHTML' => $htmlPost, 'featured' => '', 'viewHTML' => $htmlNew], $statusCode);
     }
 
+    public function list(Request $request, Response $response, array $args = []): Response {
+        $dataService = new PostDataService();
+        
+        $dataService = new PostDataService();
+        $data = $dataService->getAll();
+
+        try {
+            $htmlNew = '';
+            foreach ($data as $row) {
+                $htmlNew .= $this->fetchHTMLView('datablocks/post.html', ['data' => $row]);
+            }
+        } catch (\Exception $e) {
+            
+        }
+
+        return $this->respondHTML($response, 'index.html', ['postHTML' => '', 'featured' => '', 'viewHTML' => $htmlNew, 'morePostsText'=>'All Posts','hideMoreButton'=>true]);
+    }
+    
 }

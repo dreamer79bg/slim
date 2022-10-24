@@ -64,5 +64,6 @@ return function (App $app) {
     
     $app->group($appBasePath . '/posts', function (App $group) {
         $group->get('/{id}', 'PostsController:view');
+        $group->get('[/]', 'PostsController:list');
     });
 };

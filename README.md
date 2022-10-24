@@ -104,3 +104,22 @@ Tests cover all core objects- CRUD, Database and Query, API actions, test html a
 Own App\Application\Controller class is implemented to allow access control and share common methods across controllers. 
 Models(CRUD objects) are in the src/Application/CRUD folder. Additional data services are implemented and can be found in the src/Application/DataServices folder.
 
+Folder structure:
+    
+    app     - configuration files
+        controllers.php     - controllers setup for the app container
+        db.php              - database configuration
+        mainconfig.php      - common settings vars(base path)
+        routes.php          - HTTP routes
+    public  - public files and main index.php file
+    setup   - database migrations and other setup routines
+    src     - main project folder
+        Application - application folder
+            CRUD            - CRUD objects/models
+            Controllers     - Controllers
+            DataServices    - data services
+            Services        - additional services
+            Views           - twig templates
+        CoreComponents      - own database layer implementation objects/classes
+    tests   - phpunit tests
+

@@ -49,30 +49,30 @@ Admin is accessibe through /admin. Example: http://127.0.0.1/slim/admin
 
 APIs:
 
- $app->group($appBasePath . '/api', function (App $group) {
-        $group->get('/test', 'APITestsController:data');
-        $group->get('/testerror', 'APITestsController:error');
-        $group->get('/testprotected', 'APITestsController:protected');
-        $group->post('/login', 'SecurityController:login'); 
-        $group->get('/logout', 'SecurityController:logout');
+    $app->group($appBasePath . '/api', function (App $group) {
+               $group->get('/test', 'APITestsController:data');
+               $group->get('/testerror', 'APITestsController:error');
+               $group->get('/testprotected', 'APITestsController:protected');
+               $group->post('/login', 'SecurityController:login'); 
+               $group->get('/logout', 'SecurityController:logout');
 
-        $group->group('/users', function (App $group) {
-            $group->get('/list', 'APIUsersController:list');
-            $group->put('[/]', 'APIUsersController:create');
-            $group->delete('/{id}', 'APIUsersController:delete');
-            $group->get('/{id}', 'APIUsersController:get');
-            // $group->post('[/]', \App\Application\API\Users\UpdateAction::class);
-            $group->post('[/[{id}]]', 'APIUsersController:update');
-        });
+               $group->group('/users', function (App $group) {
+                   $group->get('/list', 'APIUsersController:list');
+                   $group->put('[/]', 'APIUsersController:create');
+                   $group->delete('/{id}', 'APIUsersController:delete');
+                   $group->get('/{id}', 'APIUsersController:get');
+                   // $group->post('[/]', \App\Application\API\Users\UpdateAction::class);
+                   $group->post('[/[{id}]]', 'APIUsersController:update');
+               });
 
-        $group->group('/posts', function (App $group) {
-            $group->get('/list', 'APIPostsController:list');
-            $group->put('[/]', 'APIPostsController:create');
-            $group->delete('/{id}', 'APIPostsController:delete');
-            $group->get('/{id}', 'APIPostsController:get'); 
-            $group->post('[/[{id}]]', 'APIPostsController:update');
-        });
-    });
+               $group->group('/posts', function (App $group) {
+                   $group->get('/list', 'APIPostsController:list');
+                   $group->put('[/]', 'APIPostsController:create');
+                   $group->delete('/{id}', 'APIPostsController:delete');
+                   $group->get('/{id}', 'APIPostsController:get'); 
+                   $group->post('[/[{id}]]', 'APIPostsController:update');
+               });
+           });
 
 API is protected and for using it there must be a call to POST api/login with username and password(from database) before calling other methods.
 POST http://127.0.0.1/slim/api/login

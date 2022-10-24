@@ -2,7 +2,28 @@
  
 This is a test project for a blog.
 
+The project uses:
+
+    Slim v3
+    Bootstrap v4
+    TinyMCE
+    JQuery 3.5
+    PHPUnit
+
+
 To have a clean install first open app/db.php and set dbname, dbuser and dbpass properly. 
+    $dbconfig= array(
+        'dbhost'=> '127.0.0.1',
+        'dbuser'=> 'dbuser',
+        'dbpass'=>'dbpass',
+        'dbname' => 'slimblog',
+        'dbport' => 3306,
+    );
+
+If you need to change the base path change app/mainconfig.php:
+    'basePath' => '/slim', //change to empty or any other base path you want to use
+
+Base path is set initially as development is done on XAMPP for windows in a separate directory for the project.
 
 Install:
 	composer install
@@ -14,39 +35,42 @@ Update:
 
 Run migrations:
 	composer setup
-	
-APIs:
 
- $app->group('/api', function (Group $group) {
-        $group->get('/test', \App\Application\API\TestActions\TestDataAction::class);
-        $group->get('/testerror', \App\Application\API\TestActions\TestErrorAction::class);
-        $group->get('/testprotected', \App\Application\API\TestActions\TestProtectedAction::class);
-        $group->post('/login', \App\Application\API\Security\LoginAction::class);
-        $group->get('/logout', \App\Application\API\Security\LogoutAction::class);
-        
-        $group->group('/users',   function (Group $group) {
-            $group->get('/list', \App\Application\API\Users\ListAction::class);
-            $group->put('[/]', \App\Application\API\Users\CreateAction::class);
-            $group->delete('/{id}', \App\Application\API\Users\DeleteAction::class);
-            $group->get('/{id}', \App\Application\API\Users\GetAction::class);
-           // $group->post('[/]', \App\Application\API\Users\UpdateAction::class);
-            $group->post('[/[{id}]]', \App\Application\API\Users\UpdateAction::class);
-        });
-        
-        $group->group('/posts',   function (Group $group) {
-            $group->get('/list', \App\Application\API\Posts\ListAction::class);
-            $group->put('[/]', \App\Application\API\Posts\CreateAction::class);
-            $group->delete('/{id}', \App\Application\API\Posts\DeleteAction::class);
-            $group->get('/{id}', \App\Application\API\Posts\GetAction::class);
-            $group->post('[/[{id}]]', \App\Application\API\Posts\UpdateAction::class);
-        });
-    });
+Run tests:
+	composer test
 
-By default the application works on apache dir with a base /slim. If needed to run on other base just change $app->setBasePath('/slim'); in app/routes.php.
 
 By default the setup migrations install a user super / 12345678 . Some predefined users and posts are also included.
 
 Admin is accessibe through /admin. Example: http://127.0.0.1/slim/admin
+
+
+APIs:
+
+ $app->group($appBasePath . '/api', function (App $group) {
+        $group->get('/test', 'APITestsController:data');
+        $group->get('/testerror', 'APITestsController:error');
+        $group->get('/testprotected', 'APITestsController:protected');
+        $group->post('/login', 'SecurityController:login'); 
+        $group->get('/logout', 'SecurityController:logout');
+
+        $group->group('/users', function (App $group) {
+            $group->get('/list', 'APIUsersController:list');
+            $group->put('[/]', 'APIUsersController:create');
+            $group->delete('/{id}', 'APIUsersController:delete');
+            $group->get('/{id}', 'APIUsersController:get');
+            // $group->post('[/]', \App\Application\API\Users\UpdateAction::class);
+            $group->post('[/[{id}]]', 'APIUsersController:update');
+        });
+
+        $group->group('/posts', function (App $group) {
+            $group->get('/list', 'APIPostsController:list');
+            $group->put('[/]', 'APIPostsController:create');
+            $group->delete('/{id}', 'APIPostsController:delete');
+            $group->get('/{id}', 'APIPostsController:get'); 
+            $group->post('[/[{id}]]', 'APIPostsController:update');
+        });
+    });
 
 API is protected and for using it there must be a call to POST api/login with username and password(from database) before calling other methods.
 POST http://127.0.0.1/slim/api/login
@@ -73,4 +97,8 @@ For CRUD operations there is an own pseudo-ORM object implemented that controls 
 
 There are own Database connection and query(Iterator for results) implemented.
 
-Tests should cover all core objects- CRUD, Database and Query, API actions, test html actions, login and logout through API, etc. 
+Tests cover all core objects- CRUD, Database and Query, API actions, test html actions, login and logout through API, etc. 
+
+Own App\Application\Controller class is implemented to allow access control and share common methods across controllers. 
+Models(CRUD objects) are in the src/Application/CRUD folder. Additional data services are implemented and can be found in the src/Application/DataServices folder.
+
